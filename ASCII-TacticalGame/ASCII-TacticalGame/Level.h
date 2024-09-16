@@ -3,9 +3,10 @@
 #include "GameObject.h"
 
 #include <vector>
+#include <string>
 
-#include "Player.h"
-#include "Cell.h"
+class Player;
+class Cell;
 
 class Level : public GameObject
 {
@@ -16,15 +17,26 @@ public:
 
 protected:
 
-	static Player* sPlayer;
+	Player* mPlayer;
 
 	std::vector<std::vector<Cell*>> mGrid;
 	unsigned int mCurrentLevelIndex;
 
+protected:
+
+	void LoadFromTxtLevel(const std::vector<std::string>& lines);
+
+	void DrawHorizontalBorder();
+	void SetConsoleColor(int color = 0);
+
 public:
 
-	virtual void CreateLevel(unsigned int levelId);
-	virtual void UpdateLevel();
+	// Load level from txt file by index
+	virtual void Load(unsigned int levelId = 0);
+	// Update level to represent current game state
+	virtual void Update();
+
+	Player* GetPlayer() const { return mPlayer; }
 	
 };
 

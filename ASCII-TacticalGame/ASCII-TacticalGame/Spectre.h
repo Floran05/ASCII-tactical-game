@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-class Specter : public Enemy
+class Spectre : public Enemy
 {
 };
 

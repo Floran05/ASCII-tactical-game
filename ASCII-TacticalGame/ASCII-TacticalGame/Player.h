@@ -4,5 +4,9 @@
 
 class Player : public Character
 {
+public:
+	Player();
+	virtual ~Player();
+
 };
 

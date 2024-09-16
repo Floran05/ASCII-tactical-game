@@ -139,7 +139,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Reaper.cpp" />
     <ClCompile Include="Singleton.cpp" />
-    <ClCompile Include="Specter.cpp" />
+    <ClCompile Include="Spectre.cpp" />
+    <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
@@ -153,7 +154,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Reaper.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Specter.h" />
+    <ClInclude Include="Spectre.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

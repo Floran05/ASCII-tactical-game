@@ -21,5 +21,8 @@ public:
 	virtual bool CanAttack();
 	virtual bool ApplyDamage(Character* target);
 
-};
+	int GetHealthPoints() const { return mHealthPoint; }
+	int GetAttackPower() const { return mAttackPower; }
+	int GetMaxRange() const { return mMaxRange; }
 
+};

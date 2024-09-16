@@ -16,6 +16,7 @@ private:
 public:
 
 	void SetContent(GameObject* content) { mContent = content; }
+	GameObject* GetContent() const { return mContent; }
 
 };
 

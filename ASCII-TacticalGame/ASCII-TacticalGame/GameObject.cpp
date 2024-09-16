@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 GameObject::GameObject()
-	: mPosition(Coordinates())
+	: mPosition({0, 0})
 	, mSymbol('?')
 {
 }
