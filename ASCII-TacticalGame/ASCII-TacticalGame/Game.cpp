@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Level.h"
 #include "Controller.h"
+#include "Windows.h"
 
 Game::Game()
 	: mLevel(nullptr)
@@ -17,17 +18,18 @@ Game::~Game()
 void Game::Init()
 {
 	mLevel = new Level();
-	mLevel->Load();
-	mLevel->Update();
 	mController = new Controller();
 }
 
 void Game::Run()
 {
-	
+	while (true)
+	{
+
+	}
 }
 
 void Game::Start()
 {
-
+	mLevel->Load();
 }

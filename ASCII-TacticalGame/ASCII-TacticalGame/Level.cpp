@@ -1,6 +1,5 @@
 #include <fstream>
 #include <iostream>
-#include <Windows.h>
 
 #include "Game.h"
 #include "Level.h"
@@ -78,14 +77,66 @@ void Level::DrawHorizontalBorder()
 	std::cout << std::endl;
 }
 
-void Level::SetConsoleColor(int color)
+void Level::SetConsoleColor(HANDLE handleConsole, int color)
 {
-	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (color <= 0)
 	{
 		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 	}
 	SetConsoleTextAttribute(handleConsole, color);
+}
+
+void Level::ClearConsole(HANDLE handleConsole)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	SMALL_RECT scrollRect;
+	COORD scrollTarget;
+	CHAR_INFO fill;
+
+	// Get the number of character cells in the current buffer.
+	if (!GetConsoleScreenBufferInfo(handleConsole, &csbi))
+	{
+		return;
+	}
+
+	// Scroll the rectangle of the entire buffer.
+	scrollRect.Left = 0;
+	scrollRect.Top = 0;
+	scrollRect.Right = csbi.dwSize.X;
+	scrollRect.Bottom = csbi.dwSize.Y;
+
+	// Scroll it upwards off the top of the buffer with a magnitude of the entire height.
+	scrollTarget.X = 0;
+	scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+
+	// Fill with empty spaces with the buffer's default text attribute.
+	fill.Char.UnicodeChar = TEXT(' ');
+	fill.Attributes = csbi.wAttributes;
+
+	// Do the scroll
+	ScrollConsoleScreenBuffer(handleConsole, &scrollRect, NULL, scrollTarget, &fill);
+
+	// Move the cursor to the top left corner too.
+	csbi.dwCursorPosition.X = 0;
+	csbi.dwCursorPosition.Y = 0;
+
+	SetConsoleCursorPosition(handleConsole, csbi.dwCursorPosition);
+}
+
+void Level::UpdateEnemyUI()
+{
+	if (!mPlayer->CanAttack()) return;
+
+
+}
+
+void Level::UpdatePlayerUI()
+{
+}
+
+void Level::DrawHealthBar(int size, float percent)
+{
+
 }
 
 void Level::Load(unsigned int levelId)
@@ -129,6 +180,8 @@ void Level::Load(unsigned int levelId)
 
 void Level::Update()
 {
+	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	ClearConsole(handleConsole);
 	DrawHorizontalBorder();
 	int r = 0, c = 0;
 	for (std::vector<Cell*> row : mGrid)
@@ -143,10 +196,10 @@ void Level::Update()
 				const Coordinates PlayerPosition = mPlayer->GetPosition();
 				if (Utilities::ManhattanDistance(PlayerPosition.x, PlayerPosition.y, r, c) <= mPlayer->GetMaxRange())
 				{
-					SetConsoleColor(BACKGROUND_BLUE);
+					SetConsoleColor(handleConsole, BACKGROUND_BLUE);
 				}
 				std::cout << "   ";
-				SetConsoleColor(0);
+				SetConsoleColor(handleConsole, 0);
 				std::cout << "|";
 			}
 			else
@@ -161,4 +214,11 @@ void Level::Update()
 
 		++r;
 	}
+}
+
+Coordinates Level::GetGridSize() const
+{
+	if (!mGrid.size()) return Coordinates();
+	
+	return Coordinates(mGrid.size(), mGrid[0].size());;
 }

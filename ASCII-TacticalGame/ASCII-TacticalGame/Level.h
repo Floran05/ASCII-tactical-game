@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <Windows.h>
 
 class Player;
 class Cell;
@@ -24,10 +25,20 @@ protected:
 
 protected:
 
+	// Load level to mGrid from txt lines
 	void LoadFromTxtLevel(const std::vector<std::string>& lines);
 
+	// Draw grid top / bottom border
 	void DrawHorizontalBorder();
-	void SetConsoleColor(int color = 0);
+	// Change console text / background color
+	void SetConsoleColor(HANDLE handleConsole, int color = 0);
+	// Clear console content
+	void ClearConsole(HANDLE handleConsole);
+	// Display enemy stats
+	void UpdateEnemyUI();
+	// Display player stats and messages
+	void UpdatePlayerUI();
+	void DrawHealthBar(int size, float percent);
 
 public:
 
@@ -37,6 +48,7 @@ public:
 	virtual void Update();
 
 	Player* GetPlayer() const { return mPlayer; }
+	Coordinates GetGridSize() const;
 	
 };
 
