@@ -53,11 +53,22 @@ bool Character::CanAttack()
 void Character::ApplyDamage(Character* target)
 {
 	target->SetHealthPoint(target->GetHealthPoints() - mAttackPower);
+	target->AnyDamage(this);
 	if (target->GetHealthPoints() <= 0) {
 		target->Kill();
 	}
 }
 
+void Character::AnyDamage(Character* initiator)
+{
+
+}
+
+void Character::OnKill(Character* initiator)
+{
+}
+
 void Character::GetEnemyNearby(Coordinates position)
 {
+
 }
