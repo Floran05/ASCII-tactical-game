@@ -11,7 +11,6 @@ Character::Character()
 	, mMaxHealthPoint(0)
 	, mAttackPower(0)
 	, mMaxRange(0)
-	, mIsAlive(true)
 	, mCurrentTarget(nullptr)
 {
 }

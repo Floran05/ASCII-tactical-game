@@ -38,4 +38,19 @@ bool Controller::IsKey(int key)
 	return mkey[key] == KeyState::Pressed;
 }
 
+int Controller::WaitForKey()
+{
+	while (true)
+	{
+		for (int i = 0; i < 256; i++)
+		{
+			if (GetAsyncKeyState(i) < 0)
+			{
+				return i;
+			}
+		}
+	}
+	return 0;
+}
+
 

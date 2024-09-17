@@ -9,6 +9,8 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
+	void Update() override;
+
 public:
 
 	template<typename T>

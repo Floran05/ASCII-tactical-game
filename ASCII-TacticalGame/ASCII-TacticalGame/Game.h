@@ -31,6 +31,9 @@ public:
 	void Init();
 	void Run();
 
+	void Update();
+	void Render();
+
 	void RequestRender();
 	void AddObject(GameObject* object);
 

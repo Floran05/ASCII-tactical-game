@@ -26,6 +26,7 @@ protected:
 	static int sObjectGlobalId;
 
 	int mId;
+	bool mIsAlive;
 	Coordinates mPosition;
 	char mSymbol;
 
@@ -40,6 +41,9 @@ public:
 	int GetId() const { return mId; }
 	Coordinates GetPosition() const { return mPosition; }
 	char GetSymbol() const { return mSymbol; }
+	bool IsAlive() const { return mIsAlive; }
+
+	void Kill() { mIsAlive = false; }
 
 };
 

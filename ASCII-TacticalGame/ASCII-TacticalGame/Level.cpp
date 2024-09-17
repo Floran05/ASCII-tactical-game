@@ -34,7 +34,7 @@ void Level::Update()
 
 void Level::Render()
 {
-	if (!mGrid.size()) return;
+	if (!mGrid.size() || mPlayer == nullptr) return;
 	int gridWidth = static_cast<int>(mGrid[0].size());
 
 	Console::ClearConsole();
@@ -50,15 +50,18 @@ void Level::Render()
 		std::cout << "|";
 		for (Cell* cell : row)
 		{
-			if (cell->GetContent() == nullptr)
+			if (cell->GetContent() == nullptr || !cell->GetContent()->IsAlive())
 			{
-				if (r == initialPosition.x && c == initialPosition.y)
+				if (mPlayer->IsHisTurn())
 				{
-					Console::SetConsoleColor(BACKGROUND_BLUE);
-				}
-				else if (Utilities::ManhattanDistance(initialPosition.x, initialPosition.y, r, c) <= mPlayer->GetMaxRange())
-				{
-					Console::SetConsoleColor(BACKGROUND_GREEN);
+					if (r == initialPosition.x && c == initialPosition.y)
+					{
+						Console::SetConsoleColor(BACKGROUND_BLUE);
+					}
+					else if (Utilities::ManhattanDistance(initialPosition.x, initialPosition.y, r, c) <= mPlayer->GetMaxRange())
+					{
+						Console::SetConsoleColor(BACKGROUND_GREEN);
+					}
 				}
 				std::cout << "   ";
 				Console::SetConsoleColor(0);

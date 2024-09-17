@@ -17,7 +17,6 @@ protected:
 	int mMaxHealthPoint;
 	int mAttackPower;
 	int mMaxRange;
-	bool mIsAlive;
 	Character* mCurrentTarget;
 	Coordinates mRoundPosition;
 
@@ -31,7 +30,6 @@ public:
 	virtual void SetRoundPosition(int x, int y) { mRoundPosition = Coordinates(x, y); }
 	void SetHealthPoint(int Health) { mHealthPoint = Health; }
 	void SetAttackPower(int AttackPower) { mAttackPower = AttackPower; }
-	void Kill() { mIsAlive = false; }
 	
 	int GetHealthPoints() const { return mHealthPoint; }
 	int GetMaxHealthPoints() const { return mMaxHealthPoint; }
@@ -39,7 +37,6 @@ public:
 	int GetMaxRange() const { return mMaxRange; }
 	Character* GetCurrentTarget() const { return mCurrentTarget; }
 	Coordinates GetRoundPosition() const { return mRoundPosition; }
-	bool IsAlive() const { return mIsAlive; }
 
 	virtual void GetEnemyNearby(Coordinates position);
 	template<typename T> T* TGetEnemyNearby(Coordinates position )
