@@ -11,5 +11,6 @@ protected :
 	
 public:
 	void Update();
+	void GetEnemyNearby(Coordinates position);
 };
 

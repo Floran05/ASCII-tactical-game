@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "Game.h"
 #include "Controller.h"
+#include "Enemy.h"
+#include<iostream>
 #include <Windows.h>
 Player::Player()
 {
@@ -29,4 +31,12 @@ void Player::Update()
 	else if (I(Game)->GetController()->IsKey(VK_SPACE)) {
 
 	}
+	GetEnemyNearby( mPosition);
+
+}
+//overide this funct for enemy
+void Player::GetEnemyNearby(Coordinates position)
+{
+	mCurrentTarget = TGetEnemyNearby<Enemy>(position);
+	
 }

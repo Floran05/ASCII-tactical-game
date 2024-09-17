@@ -10,6 +10,7 @@ Character::Character()
 	: mHealthPoint(0)
 	, mAttackPower(0)
 	, mMaxRange(0)
+	,mIsAlive(true)
 {
 }
 
@@ -36,10 +37,6 @@ void Character::Move(int x, int y)
 		return;
 	}
 	mPosition = newPosition;
-
-	
-	
-
 	if (oldPosition.x != newPosition.x || oldPosition.y != newPosition.y)
 	{
 		I(Game)->GetLevel()->MoveGameObjectInGrid(oldPosition, newPosition);
@@ -49,10 +46,17 @@ void Character::Move(int x, int y)
 
 bool Character::CanAttack()
 {
-	return false;
+	return mIsAlive && mCurrentTarget != nullptr;	
 }
 
-bool Character::ApplyDamage(Character* target)
+void Character::ApplyDamage(Character* target)
 {
-	return false;
+	target->SetHealthPoint(target->GetHealthPoints() - mAttackPower);
+	if (target->GetHealthPoints() <= 0) {
+		target->Kill();
+	}
+}
+
+void Character::GetEnemyNearby(Coordinates position)
+{
 }
