@@ -2,6 +2,8 @@
 
 #include "Singleton.h"
 
+#define FRAMERATE 30
+
 class Level;
 class Controller;
 
@@ -21,7 +23,6 @@ public:
 
 	void Init();
 	void Run();
-	void Start();
 
 	Level* GetLevel() { return mLevel; }
 	Controller* GetController() { return mController; }

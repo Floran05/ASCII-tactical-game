@@ -57,5 +57,17 @@ public:
 	
 	void MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinates& newPosition);
 	bool IsCellEmpty(const Coordinates& position);
+
+	template <typename T>
+	T* GetTargetInCell(const Coordinates& position);
 };
 
+template<typename T>
+inline T* Level::GetTargetInCell(const Coordinates& position)
+{
+	if (!IsCellEmpty(position))
+	{
+		return dynamic_cast<T*>(mGrid[position.x][position.y]->GetContent());
+	}
+	return nullptr;
+}

@@ -102,7 +102,7 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 			case 'S':
 				newCell->SetContent(Enemy::Create<Spectre>());
 				break;
-			case 'F':
+			case 'R':
 				newCell->SetContent(Enemy::Create<Reaper>());
 				break;
 			default:
@@ -177,21 +177,49 @@ void Level::UpdateEnemyUI()
 {
 	if (!mPlayer->CanAttack()) return;
 
-
+	
 }
 
 void Level::UpdatePlayerUI()
 {
+	int healthBarSize = 10;
+	if (mGrid.size())
+	{
+		healthBarSize = mGrid[0].size();
+	}
+	//DrawHealthBar(healthBarSize, )
+
 }
 
 void Level::DrawHealthBar(int size, float percent)
 {
+	if (size < 3) size = 3;
+	size -= 2;
 
+	float step = 1.f / size;
+
+	std::cout << "[";
+	for (int i = 0; i < size; ++i)
+	{
+		std::cout << (percent <= i * step) ? "=" : " ";
+	}
+	std::cout << "]";
 }
 
 int Level::GetRemainingEnemies()
 {
-	return 0;
+	int remainingEnemies = 0;
+	for (std::vector<Cell*>& row : mGrid)
+	{
+		for (Cell* cell : row)
+		{
+			if (cell->GetContent() != nullptr && dynamic_cast<Enemy*>(cell->GetContent()))
+			{
+				++remainingEnemies;
+			}
+		}
+	}
+	return remainingEnemies;
 }
 
 void Level::MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinates& newPosition)
@@ -252,5 +280,5 @@ Coordinates Level::GetGridSize() const
 {
 	if (!mGrid.size()) return Coordinates();
 	
-	return Coordinates(mGrid.size(), mGrid[0].size());;
+	return Coordinates(mGrid.size(), mGrid[0].size());
 }

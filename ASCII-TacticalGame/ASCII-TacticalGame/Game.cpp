@@ -34,11 +34,6 @@ void Game::Run()
 		mLevel->Update();
 		mController->Update();
 		
-		Sleep((1.f / 30) * 1000);
+		Sleep((1.f / FRAMERATE) * 1000);
 	}
-}
-
-void Game::Start()
-{
-	
 }
