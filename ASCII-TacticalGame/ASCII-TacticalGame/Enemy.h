@@ -18,5 +18,5 @@ public:
 template<typename T>
 inline T* Enemy::Create()
 {
-	return nullptr;
+	return new T();
 }

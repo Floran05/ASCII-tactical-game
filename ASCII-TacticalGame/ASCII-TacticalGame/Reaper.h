@@ -4,5 +4,8 @@
 
 class Reaper : public Enemy
 {
+public:
+	Reaper();
+	virtual ~Reaper();
 };
 
