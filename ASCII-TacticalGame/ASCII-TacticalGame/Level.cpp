@@ -188,7 +188,16 @@ void Level::UpdatePlayerUI()
 		healthBarSize = mGrid[0].size();
 	}
 	//DrawHealthBar(healthBarSize, )
+	// std::cout << mPlayer->GetHealthPoints() << " / " << mPlayer->GetMaxHealthPoints() << std::endl;
+	std::cout << "Attack power: " << mPlayer->GetAttackPower() << std::endl;
 
+	// Contextual inputs
+
+	// Message
+	if (!mContextualMessage.empty())
+	{
+		std::cout << mContextualMessage << std::endl;
+	}
 }
 
 void Level::DrawHealthBar(int size, float percent)

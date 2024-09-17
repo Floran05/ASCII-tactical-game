@@ -6,8 +6,9 @@
 #include <string>
 #include <Windows.h>
 
+#include "Cell.h"
+
 class Player;
-class Cell;
 
 class Level : public GameObject
 {
@@ -26,7 +27,7 @@ protected:
 	std::vector<std::vector<Cell*>> mGrid;
 	unsigned int mCurrentLevelIndex;
 
-
+	std::string mContextualMessage;
 
 protected:
 
@@ -51,6 +52,8 @@ public:
 
 	// Load level from txt file by index
 	virtual void Load(unsigned int levelId = 0);
+
+	void SetContextualMessage(const std::string& message) { mContextualMessage = message; }
 
 	Player* GetPlayer() const { return mPlayer; }
 	Coordinates GetGridSize() const;
