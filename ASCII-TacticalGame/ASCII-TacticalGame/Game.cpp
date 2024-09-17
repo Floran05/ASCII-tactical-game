@@ -9,6 +9,7 @@
 Game::Game()
 	: mLevel(nullptr)
 	, mController(nullptr)
+	, mRenderNeeded(true)
 {
 }
 
@@ -22,18 +23,39 @@ void Game::Init()
 {
 	mLevel = new Level();
 	mLevel->Load();
+	AddObject(mLevel);
 	mController = new Controller();
-
-	mLevel->Render();
 }
 
 void Game::Run()
 {
 	while (true)
 	{
-		mLevel->Update();
 		mController->Update();
+		for (auto it = objects.begin(); it != objects.end(); ++it)
+		{
+			(*it)->Update();
+		}
+
+		if (mRenderNeeded)
+		{
+			for (auto it = objects.begin(); it != objects.end(); ++it)
+			{
+				(*it)->Render();
+			}
+			mRenderNeeded = false;
+		}
 		
-		Sleep((1.f / FRAMERATE) * 1000);
+		Sleep(static_cast<DWORD>((1.f / FRAMERATE) * 1000));
 	}
+}
+
+void Game::RequestRender()
+{
+	mRenderNeeded = true;
+}
+
+void Game::AddObject(GameObject* object)
+{
+	objects.emplace_back(object);
 }

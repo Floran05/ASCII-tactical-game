@@ -10,7 +10,7 @@ public:
 protected :
 	
 public:
-	void Update();
-	void GetEnemyNearby(Coordinates position);
+	void Update() override;
+	void GetEnemyNearby(Coordinates position) override;
 };
 

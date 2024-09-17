@@ -8,6 +8,8 @@ Player::Player()
 {
 	mSymbol = '@';
 	mMaxRange = 3;
+	mHealthPoint = 5;
+	mMaxHealthPoint = mHealthPoint;
 }
 
 Player::~Player()
@@ -31,7 +33,7 @@ void Player::Update()
 	else if (I(Game)->GetController()->IsKey(VK_SPACE)) {
 
 	}
-	GetEnemyNearby( mPosition);
+	GetEnemyNearby(mPosition);
 
 }
 //overide this funct for enemy

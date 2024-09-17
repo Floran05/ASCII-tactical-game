@@ -23,6 +23,9 @@ public:
 
 protected:
 
+	static int sObjectGlobalId;
+
+	int mId;
 	Coordinates mPosition;
 	char mSymbol;
 
@@ -34,6 +37,7 @@ public:
 	virtual void SetPosition(int x, int y) { mPosition = Coordinates(x, y); }
 	virtual void SetPosition(const Coordinates& coordinates) { mPosition = coordinates; }
 
+	int GetId() const { return mId; }
 	Coordinates GetPosition() const { return mPosition; }
 	char GetSymbol() const { return mSymbol; }
 

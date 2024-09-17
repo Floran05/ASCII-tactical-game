@@ -18,5 +18,7 @@ public:
 template<typename T>
 inline T* Enemy::Create()
 {
-	return new T();
+	T* enemy = new T();
+	I(Game)->AddObject(enemy);
+	return enemy;
 }

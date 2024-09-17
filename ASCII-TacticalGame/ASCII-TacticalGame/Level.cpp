@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Game.h"
+#include "Console.h"
 #include "Level.h"
 #include "Player.h"
 #include "Golem.h"
@@ -34,10 +35,13 @@ void Level::Update()
 void Level::Render()
 {
 	if (!mGrid.size()) return;
+	int gridWidth = static_cast<int>(mGrid[0].size());
 
-	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	ClearConsole(handleConsole);
-	DrawHorizontalBorder();
+	Console::ClearConsole();
+
+	Console::DrawCharacterStats(mPlayer->GetCurrentTarget(), gridWidth);
+	Console::DrawGridHorizontalBorder(gridWidth);
+	const Coordinates initialPosition = mPlayer->GetRoundPosition();
 	int r = 0, c = 0;
 	for (std::vector<Cell*> row : mGrid)
 	{
@@ -48,32 +52,49 @@ void Level::Render()
 		{
 			if (cell->GetContent() == nullptr)
 			{
-				const Coordinates PlayerPosition = mPlayer->GetRoundPosition();
-				if (Utilities::ManhattanDistance(PlayerPosition.x, PlayerPosition.y, r, c) <= mPlayer->GetMaxRange())
+				if (r == initialPosition.x && c == initialPosition.y)
 				{
-					SetConsoleColor(handleConsole, BACKGROUND_BLUE);
+					Console::SetConsoleColor(BACKGROUND_BLUE);
+				}
+				else if (Utilities::ManhattanDistance(initialPosition.x, initialPosition.y, r, c) <= mPlayer->GetMaxRange())
+				{
+					Console::SetConsoleColor(BACKGROUND_GREEN);
 				}
 				std::cout << "   ";
-				SetConsoleColor(handleConsole, 0);
+				Console::SetConsoleColor(0);
 				std::cout << "|";
 			}
 			else
 			{
-				std::cout << " " << cell->GetContent()->GetSymbol() << " |";
+				std::cout << " ";
+				if (mPlayer->GetCurrentTarget() != nullptr && cell->GetContent()->GetId() == mPlayer->GetCurrentTarget()->GetId())
+				{
+					Console::SetConsoleColor(FOREGROUND_RED);
+				}
+				std::cout << cell->GetContent()->GetSymbol();
+				Console::SetConsoleColor(0);
+				std::cout << " |";
 			}
 
 			++c;
 		}
 		std::cout << std::endl;
-		DrawHorizontalBorder();
+		Console::DrawGridHorizontalBorder(gridWidth);
 
 		++r;
+	}
+
+	Console::DrawCharacterStats(mPlayer, gridWidth);
+	Console::DrawContextualInputs();
+	if (!mContextualMessage.empty())
+	{
+		Console::DrawMessage(mContextualMessage);
 	}
 }
 
 void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 {
-	for (int i = 0, j = lines.size(); i < j; ++i)
+	for (int i = 0, j = static_cast<int>(lines.size()); i < j; ++i)
 	{
 		mGrid.emplace_back(std::vector<Cell*>());
 		int column = 0;
@@ -115,106 +136,6 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 	}
 }
 
-void Level::DrawHorizontalBorder()
-{
-	if (mGrid.size() <= 0) return;
-
-	std::cout << "+";
-	for (int i = 0, j = mGrid[0].size(); i < j; ++i)
-	{
-		std::cout << "---+";
-	}
-	std::cout << std::endl;
-}
-
-void Level::SetConsoleColor(HANDLE handleConsole, int color)
-{
-	if (color <= 0)
-	{
-		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
-	}
-	SetConsoleTextAttribute(handleConsole, color);
-}
-
-void Level::ClearConsole(HANDLE handleConsole)
-{
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	SMALL_RECT scrollRect;
-	COORD scrollTarget;
-	CHAR_INFO fill;
-
-	// Get the number of character cells in the current buffer.
-	if (!GetConsoleScreenBufferInfo(handleConsole, &csbi))
-	{
-		return;
-	}
-
-	// Scroll the rectangle of the entire buffer.
-	scrollRect.Left = 0;
-	scrollRect.Top = 0;
-	scrollRect.Right = csbi.dwSize.X;
-	scrollRect.Bottom = csbi.dwSize.Y;
-
-	// Scroll it upwards off the top of the buffer with a magnitude of the entire height.
-	scrollTarget.X = 0;
-	scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
-
-	// Fill with empty spaces with the buffer's default text attribute.
-	fill.Char.UnicodeChar = TEXT(' ');
-	fill.Attributes = csbi.wAttributes;
-
-	// Do the scroll
-	ScrollConsoleScreenBuffer(handleConsole, &scrollRect, NULL, scrollTarget, &fill);
-
-	// Move the cursor to the top left corner too.
-	csbi.dwCursorPosition.X = 0;
-	csbi.dwCursorPosition.Y = 0;
-
-	SetConsoleCursorPosition(handleConsole, csbi.dwCursorPosition);
-}
-
-void Level::UpdateEnemyUI()
-{
-	if (!mPlayer->CanAttack()) return;
-
-	
-}
-
-void Level::UpdatePlayerUI()
-{
-	int healthBarSize = 10;
-	if (mGrid.size())
-	{
-		healthBarSize = mGrid[0].size();
-	}
-	//DrawHealthBar(healthBarSize, )
-	// std::cout << mPlayer->GetHealthPoints() << " / " << mPlayer->GetMaxHealthPoints() << std::endl;
-	std::cout << "Attack power: " << mPlayer->GetAttackPower() << std::endl;
-
-	// Contextual inputs
-
-	// Message
-	if (!mContextualMessage.empty())
-	{
-		std::cout << mContextualMessage << std::endl;
-	}
-}
-
-void Level::DrawHealthBar(int size, float percent)
-{
-	if (size < 3) size = 3;
-	size -= 2;
-
-	float step = 1.f / size;
-
-	std::cout << "[";
-	for (int i = 0; i < size; ++i)
-	{
-		std::cout << (percent <= i * step) ? "=" : " ";
-	}
-	std::cout << "]";
-}
-
 int Level::GetRemainingEnemies()
 {
 	int remainingEnemies = 0;
@@ -240,13 +161,13 @@ void Level::MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinat
 bool Level::IsCellEmpty(const Coordinates& position)
 {
 	if (position.x < 0) 
-		return false;
+		return true;
 	if (position.x > mGrid.size() - 1) 
-		return false;
+		return true;
 	if (position.y < 0) 
-		return false;
+		return true;
 	if (position.y > mGrid[position.x].size() - 1) 
-		return false;
+		return true;
 	return mGrid[position.x][position.y]->GetContent() == nullptr;
 }
 
@@ -293,5 +214,5 @@ Coordinates Level::GetGridSize() const
 {
 	if (!mGrid.size()) return Coordinates();
 	
-	return Coordinates(mGrid.size(), mGrid[0].size());
+	return Coordinates(static_cast<int>(mGrid.size()), static_cast<int>(mGrid[0].size()));
 }

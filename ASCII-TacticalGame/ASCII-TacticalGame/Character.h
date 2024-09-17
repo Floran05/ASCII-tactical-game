@@ -18,7 +18,7 @@ protected:
 	int mAttackPower;
 	int mMaxRange;
 	bool mIsAlive;
-	Enemy* mCurrentTarget;
+	Character* mCurrentTarget;
 	Coordinates mRoundPosition;
 
 public:
@@ -37,7 +37,10 @@ public:
 	int GetMaxHealthPoints() const { return mMaxHealthPoint; }
 	int GetAttackPower() const { return mAttackPower; }
 	int GetMaxRange() const { return mMaxRange; }
+	Character* GetCurrentTarget() const { return mCurrentTarget; }
 	Coordinates GetRoundPosition() const { return mRoundPosition; }
+	bool IsAlive() const { return mIsAlive; }
+
 	virtual void GetEnemyNearby(Coordinates position);
 	template<typename T> T* TGetEnemyNearby(Coordinates position )
 	{
@@ -53,5 +56,6 @@ public:
 		enemy = I(Game)->GetLevel()->GetTargetInCell<T>(Coordinates(position.x,position.y-1));
 		if (enemy != nullptr)
 			return enemy;
+		return nullptr;
 	}
 };

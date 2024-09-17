@@ -8,9 +8,11 @@
 
 Character::Character()
 	: mHealthPoint(0)
+	, mMaxHealthPoint(0)
 	, mAttackPower(0)
 	, mMaxRange(0)
-	,mIsAlive(true)
+	, mIsAlive(true)
+	, mCurrentTarget(nullptr)
 {
 }
 
@@ -40,7 +42,7 @@ void Character::Move(int x, int y)
 	if (oldPosition.x != newPosition.x || oldPosition.y != newPosition.y)
 	{
 		I(Game)->GetLevel()->MoveGameObjectInGrid(oldPosition, newPosition);
-		I(Game)->GetLevel()->Render();
+		I(Game)->RequestRender();
 	}
 }
 

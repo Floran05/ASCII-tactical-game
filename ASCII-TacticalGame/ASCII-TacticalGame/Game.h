@@ -2,10 +2,13 @@
 
 #include "Singleton.h"
 
+#include <list>
+
 #define FRAMERATE 30
 
 class Level;
 class Controller;
+class GameObject;
 
 class Game : public Singleton<Game>
 {
@@ -19,14 +22,21 @@ protected:
 	Level* mLevel;
 	Controller* mController;
 
+	bool mRenderNeeded;
+
+	std::list<GameObject*> objects;
+
 public:
 
 	void Init();
 	void Run();
 
-	Level* GetLevel() { return mLevel; }
-	Controller* GetController() { return mController; }
+	void RequestRender();
+	void AddObject(GameObject* object);
 
+
+	Level* GetLevel() const { return mLevel; }
+	Controller* GetController() const { return mController; }
 
 };
 

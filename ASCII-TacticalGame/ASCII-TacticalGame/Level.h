@@ -34,18 +34,6 @@ protected:
 	// Load level to mGrid from txt lines
 	void LoadFromTxtLevel(const std::vector<std::string>& lines);
 
-	// Draw grid top / bottom border
-	void DrawHorizontalBorder();
-	// Change console text / background color
-	void SetConsoleColor(HANDLE handleConsole, int color = 0);
-	// Clear console content
-	void ClearConsole(HANDLE handleConsole);
-	// Display enemy stats
-	void UpdateEnemyUI();
-	// Display player stats and messages
-	void UpdatePlayerUI();
-	void DrawHealthBar(int size, float percent);
-
 	int GetRemainingEnemies();
 
 public:
