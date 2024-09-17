@@ -2,8 +2,12 @@
 
 Enemy::Enemy()
 {
+	mMaxRange = 1;
+
 }
 
 Enemy::~Enemy()
 {
 }
+
+

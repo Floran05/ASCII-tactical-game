@@ -8,5 +8,8 @@ public:
 	Golem();
 	virtual ~Golem();
 
+	void OnKill(Character* initiator);
+	void AnyDamage(Character* initiator);
+	
 };
 
