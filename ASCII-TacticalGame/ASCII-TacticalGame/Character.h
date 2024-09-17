@@ -14,6 +14,7 @@ protected:
 	int mHealthPoint;
 	int mAttackPower;
 	int mMaxRange;
+	Coordinates mRoundPosition;
 
 public:
 
