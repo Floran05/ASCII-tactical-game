@@ -16,9 +16,16 @@ void Controller::Update()
 {
 	for (int i = 0; i < 256; i++) {
 		bool currentstate = GetAsyncKeyState(i) < 0;
-		if (currentstate) {
-			mkey[i] = KeyState::Pressed;
+		if (currentstate ) {
+			if (mkey[i] == KeyState::None) {
+				mkey[i] = KeyState::Pressed;
+			}
+			else if ( mkey[i] == KeyState::Pressed) {
+				mkey[i] = KeyState::Down;
+			}
+			
 		}
+		
 		else {
 			mkey[i] = KeyState::None;
 		}

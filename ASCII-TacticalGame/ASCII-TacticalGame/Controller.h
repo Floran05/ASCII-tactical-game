@@ -1,7 +1,8 @@
 #pragma once
 enum KeyState {
 	None,
-	Pressed 
+	Pressed ,
+	Down
 };
 class Controller
 {
