@@ -22,6 +22,55 @@ Level::~Level()
 	delete mPlayer;
 }
 
+void Level::Update()
+{
+	mPlayer->Update();
+	if (GetRemainingEnemies() <= 0)
+	{
+		Load(++mCurrentLevelIndex);
+	}
+}
+
+void Level::Render()
+{
+	if (!mGrid.size()) return;
+
+	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	ClearConsole(handleConsole);
+	DrawHorizontalBorder();
+	int r = 0, c = 0;
+	for (std::vector<Cell*> row : mGrid)
+	{
+		c = 0;
+
+		std::cout << "|";
+		for (Cell* cell : row)
+		{
+			if (cell->GetContent() == nullptr)
+			{
+				const Coordinates PlayerPosition = mPlayer->GetRoundPosition();
+				if (Utilities::ManhattanDistance(PlayerPosition.x, PlayerPosition.y, r, c) <= mPlayer->GetMaxRange())
+				{
+					SetConsoleColor(handleConsole, BACKGROUND_BLUE);
+				}
+				std::cout << "   ";
+				SetConsoleColor(handleConsole, 0);
+				std::cout << "|";
+			}
+			else
+			{
+				std::cout << " " << cell->GetContent()->GetSymbol() << " |";
+			}
+
+			++c;
+		}
+		std::cout << std::endl;
+		DrawHorizontalBorder();
+
+		++r;
+	}
+}
+
 void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 {
 	for (int i = 0, j = lines.size(); i < j; ++i)
@@ -39,6 +88,7 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 				{
 					mPlayer = new Player();
 					mPlayer->SetPosition(i, column);
+					mPlayer->SetRoundPosition(i, column);
 					newCell->SetContent(mPlayer);
 				}
 				else
@@ -139,6 +189,17 @@ void Level::DrawHealthBar(int size, float percent)
 
 }
 
+int Level::GetRemainingEnemies()
+{
+	return 0;
+}
+
+void Level::MoveGameObjectInGrid(Coordinates oldPosition, Coordinates newPosition)
+{
+	mGrid[newPosition.x][newPosition.y]->SetContent(mGrid[oldPosition.x][oldPosition.y]->GetContent());
+	mGrid[oldPosition.x][oldPosition.y]->SetContent(nullptr);
+}
+
 void Level::Load(unsigned int levelId)
 {
 	unsigned int currentLevelId = 0;
@@ -176,44 +237,6 @@ void Level::Load(unsigned int levelId)
 	file.close();
 
 	return LoadFromTxtLevel(levelRaw);
-}
-
-void Level::Update()
-{
-	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	ClearConsole(handleConsole);
-	DrawHorizontalBorder();
-	int r = 0, c = 0;
-	for (std::vector<Cell*> row : mGrid)
-	{
-		c = 0;
-
-		std::cout << "|";
-		for (Cell* cell : row)
-		{
-			if (cell->GetContent() == nullptr)
-			{
-				const Coordinates PlayerPosition = mPlayer->GetPosition();
-				if (Utilities::ManhattanDistance(PlayerPosition.x, PlayerPosition.y, r, c) <= mPlayer->GetMaxRange())
-				{
-					SetConsoleColor(handleConsole, BACKGROUND_BLUE);
-				}
-				std::cout << "   ";
-				SetConsoleColor(handleConsole, 0);
-				std::cout << "|";
-			}
-			else
-			{
-				std::cout << " " << cell->GetContent()->GetSymbol() << " |";
-			}
-
-			++c;
-		}
-		std::cout << std::endl;
-		DrawHorizontalBorder();
-
-		++r;
-	}
 }
 
 Coordinates Level::GetGridSize() const

@@ -22,8 +22,12 @@ public:
 	virtual bool CanAttack();
 	virtual bool ApplyDamage(Character* target);
 
+	virtual void SetRoundPosition(Coordinates position) { mRoundPosition = position; }
+	virtual void SetRoundPosition(int x, int y) { mRoundPosition = Coordinates(x, y); }
+
 	int GetHealthPoints() const { return mHealthPoint; }
 	int GetAttackPower() const { return mAttackPower; }
 	int GetMaxRange() const { return mMaxRange; }
+	Coordinates GetRoundPosition() const { return mRoundPosition; }
 
 };

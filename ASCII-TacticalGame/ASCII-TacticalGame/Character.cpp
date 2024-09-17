@@ -1,7 +1,11 @@
 #include "Character.h"
+
+#include <iostream>
+
 #include"Game.h"
 #include"Level.h"
 #include"Utilities.h"
+
 Character::Character()
 	: mHealthPoint(0)
 	, mAttackPower(0)
@@ -15,7 +19,14 @@ Character::~Character()
 
 void Character::Move(int x, int y)
 {	
+	Coordinates oldPosition = GetPosition();
+	std::cout << "MOVE " << oldPosition.x << " " << oldPosition.y << std::endl;
 	Coordinates GridSize = I(Game)->GetLevel()->GetGridSize();
+
+	if (Utilities::ManhattanDistance(mPosition.x + x, mPosition.y + y, mRoundPosition.x, mRoundPosition.y) > mMaxRange) {
+		return;
+	}
+
 	if (mPosition.x + x <= GridSize.x-1 && mPosition.x + x >= 0) {
 		mPosition.x += x;
 	}
@@ -24,10 +35,15 @@ void Character::Move(int x, int y)
 		mPosition.y += y;
 	}
 	
-	if (Utilities::ManhattanDistance(mPosition.x + x, mPosition.y + y, mRoundPosition.x, mRoundPosition.y) > mMaxRange) {
-		return;
+
+	Coordinates newPosition = GetPosition();
+	std::cout << "MOVE " << newPosition.x << " " << newPosition.y << std::endl;
+
+	if (oldPosition.x != newPosition.x || oldPosition.y != newPosition.y)
+	{
+		I(Game)->GetLevel()->MoveGameObjectInGrid(oldPosition, newPosition);
+		I(Game)->GetLevel()->Render();
 	}
-	
 }
 
 bool Character::CanAttack()

@@ -10,6 +10,8 @@ struct Coordinates
 
 	int x;
 	int y;
+
+	
 };
 
 class GameObject
@@ -25,6 +27,9 @@ protected:
 	char mSymbol;
 
 public:
+
+	virtual void Update();
+	virtual void Render();
 
 	virtual void SetPosition(int x, int y) { mPosition = Coordinates(x, y); }
 	virtual void SetPosition(const Coordinates& coordinates) { mPosition = coordinates; }

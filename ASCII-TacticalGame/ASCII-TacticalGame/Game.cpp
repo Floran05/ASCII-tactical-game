@@ -1,4 +1,7 @@
 #include "Game.h"
+
+#include <iostream>
+
 #include "Level.h"
 #include "Controller.h"
 #include "Windows.h"
@@ -18,18 +21,24 @@ Game::~Game()
 void Game::Init()
 {
 	mLevel = new Level();
+	mLevel->Load();
 	mController = new Controller();
+
+	mLevel->Render();
 }
 
 void Game::Run()
 {
 	while (true)
 	{
-
+		mLevel->Update();
+		mController->Update();
+		
+		Sleep((1.f / 30) * 1000);
 	}
 }
 
 void Game::Start()
 {
-	mLevel->Load();
+	
 }

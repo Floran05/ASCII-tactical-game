@@ -16,12 +16,17 @@ public:
 	Level();
 	virtual ~Level();
 
+	void Update() override;
+	void Render() override;
+
 protected:
 
 	Player* mPlayer;
 
 	std::vector<std::vector<Cell*>> mGrid;
 	unsigned int mCurrentLevelIndex;
+
+
 
 protected:
 
@@ -40,15 +45,16 @@ protected:
 	void UpdatePlayerUI();
 	void DrawHealthBar(int size, float percent);
 
+	int GetRemainingEnemies();
+
 public:
 
 	// Load level from txt file by index
 	virtual void Load(unsigned int levelId = 0);
-	// Update level to represent current game state
-	virtual void Update();
 
 	Player* GetPlayer() const { return mPlayer; }
 	Coordinates GetGridSize() const;
 	
+	void MoveGameObjectInGrid(Coordinates oldPosition, Coordinates newPosition);
 };
 

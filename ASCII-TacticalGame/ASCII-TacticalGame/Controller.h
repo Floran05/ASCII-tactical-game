@@ -9,7 +9,7 @@ public :
 	Controller();
 	virtual ~Controller();
 protected : 
-	unsigned char mkey[255];
+	unsigned char mkey[256];
 public : 
 	void Update();
 	bool IsKey(int key);
