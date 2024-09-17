@@ -194,10 +194,19 @@ int Level::GetRemainingEnemies()
 	return 0;
 }
 
-void Level::MoveGameObjectInGrid(Coordinates oldPosition, Coordinates newPosition)
+void Level::MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinates& newPosition)
 {
 	mGrid[newPosition.x][newPosition.y]->SetContent(mGrid[oldPosition.x][oldPosition.y]->GetContent());
 	mGrid[oldPosition.x][oldPosition.y]->SetContent(nullptr);
+}
+
+bool Level::IsCellEmpty(const Coordinates& position)
+{
+	if (position.x < 0) return false;
+	if (position.x > mGrid.size() - 1) return false;
+	if (position.y < 0) return false;
+	if (position.y > mGrid[position.x].size() - 1) return false;
+	return mGrid[position.x][position.y] == nullptr;
 }
 
 void Level::Load(unsigned int levelId)

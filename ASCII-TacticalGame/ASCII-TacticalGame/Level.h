@@ -55,6 +55,7 @@ public:
 	Player* GetPlayer() const { return mPlayer; }
 	Coordinates GetGridSize() const;
 	
-	void MoveGameObjectInGrid(Coordinates oldPosition, Coordinates newPosition);
+	void MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinates& newPosition);
+	bool IsCellEmpty(const Coordinates& position);
 };
 
