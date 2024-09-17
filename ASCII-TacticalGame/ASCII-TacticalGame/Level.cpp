@@ -230,11 +230,15 @@ void Level::MoveGameObjectInGrid(const Coordinates& oldPosition, const Coordinat
 
 bool Level::IsCellEmpty(const Coordinates& position)
 {
-	if (position.x < 0) return false;
-	if (position.x > mGrid.size() - 1) return false;
-	if (position.y < 0) return false;
-	if (position.y > mGrid[position.x].size() - 1) return false;
-	return mGrid[position.x][position.y] == nullptr;
+	if (position.x < 0) 
+		return false;
+	if (position.x > mGrid.size() - 1) 
+		return false;
+	if (position.y < 0) 
+		return false;
+	if (position.y > mGrid[position.x].size() - 1) 
+		return false;
+	return mGrid[position.x][position.y]->GetContent() == nullptr;
 }
 
 void Level::Load(unsigned int levelId)

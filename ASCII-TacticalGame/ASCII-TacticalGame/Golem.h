@@ -4,5 +4,9 @@
 
 class Golem : public Enemy
 {
+public:
+	Golem();
+	virtual ~Golem();
+
 };
 

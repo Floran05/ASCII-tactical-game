@@ -5,7 +5,7 @@
 Player::Player()
 {
 	mSymbol = '@';
-	mMaxRange = 4;
+	mMaxRange = 3;
 }
 
 Player::~Player()

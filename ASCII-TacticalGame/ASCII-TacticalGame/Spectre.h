@@ -4,5 +4,8 @@
 
 class Spectre : public Enemy
 {
+public:
+	Spectre();
+	virtual ~Spectre();
 };
 
