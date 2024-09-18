@@ -82,7 +82,7 @@ void Console::DrawCharacterStats(Character* character, int rowSize)
 	Console::DrawSeparator(rowSize * 4 + 1);
 	if (character == nullptr || !character->IsAlive())
 	{
-		std::string noTargetMessage = "No target";
+		const std::string noTargetMessage = "No target";
 		std::cout << std::endl;
 		std::cout << std::string(((rowSize * 4 + 1) - noTargetMessage.size()) / 2, ' ') << noTargetMessage << std::endl;
 	}

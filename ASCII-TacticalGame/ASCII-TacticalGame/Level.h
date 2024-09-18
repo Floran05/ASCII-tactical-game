@@ -34,13 +34,13 @@ protected:
 	// Load level to mGrid from txt lines
 	void LoadFromTxtLevel(const std::vector<std::string>& lines);
 
-	int GetRemainingEnemies();
-
 public:
 
 	// Load level from txt file by index
-	virtual void Load(unsigned int levelId = 0);
+	virtual void Load();
+	void ClearGrid();
 
+	int GetRemainingEnemies();
 	void SetContextualMessage(const std::string& message) { mContextualMessage = message; }
 
 	Player* GetPlayer() const { return mPlayer; }

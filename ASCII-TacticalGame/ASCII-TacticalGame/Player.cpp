@@ -36,7 +36,6 @@ void Player::Update()
 	{
 	case VK_SPACE:
 		mHisTurn = false;
-		mRoundPosition = mPosition;
 		break;
 	case VK_RETURN:
 		mHisTurn = false;
@@ -55,6 +54,10 @@ void Player::Update()
 			I(Game)->Render();
 		}
 		Update();
+	}
+	else
+	{
+		mRoundPosition = mPosition;
 	}
 }
 

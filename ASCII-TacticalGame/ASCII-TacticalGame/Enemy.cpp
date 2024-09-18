@@ -18,6 +18,7 @@ void Enemy::Update()
 	I(Game)->Render();
 	Sleep(1000);
 }
+
 void Enemy::GetEnemyNearby(Coordinates position)
 {
 	mCurrentTarget = TGetEnemyNearby<Player>(position);

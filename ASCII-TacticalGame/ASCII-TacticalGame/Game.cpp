@@ -33,15 +33,17 @@ void Game::Run()
 	while (true)
 	{
 		Update();
-		if (mRenderNeeded)
-		{
-			Render();
-		}
+		Render();
 	}
 }
 
 void Game::Update()
 {
+	if (I(Game)->GetLevel()->GetRemainingEnemies() <= 0)
+	{
+		I(Game)->GetLevel()->Load();
+	}
+
 	mController->Update();
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{

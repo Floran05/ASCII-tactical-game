@@ -26,10 +26,6 @@ Level::~Level()
 void Level::Update()
 {
 	mPlayer->Update();
-	if (GetRemainingEnemies() <= 0)
-	{
-		Load(++mCurrentLevelIndex);
-	}
 }
 
 void Level::Render()
@@ -93,11 +89,15 @@ void Level::Render()
 		Console::DrawMessage(mContextualMessage);
 		std::cout << " ";
 	}
-	Console::DrawContextualInputs();
+	if (mPlayer->IsHisTurn())
+	{
+		Console::DrawContextualInputs();
+	}
 }
 
 void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 {
+	ClearGrid();
 	for (int i = 0, j = static_cast<int>(lines.size()); i < j; ++i)
 	{
 		mGrid.emplace_back(std::vector<Cell*>());
@@ -110,16 +110,8 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 			switch (c)
 			{
 			case '@':
-				if (!mPlayer)
-				{
-					mPlayer = new Player();
-					mPlayer->SetRoundPosition(i, column);
-					newCharacter = mPlayer;
-				}
-				else
-				{
-					newCell->SetContent(nullptr);
-				}
+				mPlayer = new Player();
+				newCharacter = mPlayer;
 				break;
 			case 'G':
 				newCharacter = Enemy::Create<Golem>();
@@ -153,9 +145,15 @@ int Level::GetRemainingEnemies()
 	{
 		for (Cell* cell : row)
 		{
-			if (cell->GetContent() != nullptr && dynamic_cast<Enemy*>(cell->GetContent()))
+			if (cell->GetContent() != nullptr)
 			{
-				++remainingEnemies;
+				if (Enemy* enemy = dynamic_cast<Enemy*>(cell->GetContent()))
+				{
+					if(enemy->IsAlive())
+					{
+						++remainingEnemies;
+					}
+				}
 			}
 		}
 	}
@@ -186,8 +184,9 @@ void Level::SetCellContent(const Coordinates& position, GameObject* object)
 	mGrid[position.x][position.y]->SetContent(object);
 }
 
-void Level::Load(unsigned int levelId)
+void Level::Load()
 {
+	++mCurrentLevelIndex;
 	unsigned int currentLevelId = 0;
 	bool bSkipEmptyLine = true;
 
@@ -215,14 +214,33 @@ void Level::Load(unsigned int levelId)
 
 		if (!line.empty()) bSkipEmptyLine = false;
 
-		if (currentLevelId == levelId)
+		if (!line.empty() && currentLevelId == mCurrentLevelIndex - 1)
 		{
 			levelRaw.emplace_back(line);
 		}
 	}
 	file.close();
 
-	return LoadFromTxtLevel(levelRaw);
+	LoadFromTxtLevel(levelRaw);
+
+	I(Game)->RequestRender();
+}
+
+void Level::ClearGrid()
+{
+	for (auto row = mGrid.begin(); row != mGrid.end();)
+	{
+		for (auto col = (*row).begin(); col != (*row).end();)
+		{
+			if ((*col)->GetContent() != nullptr)
+			{
+				delete (*col)->GetContent();
+				(*col)->SetContent(nullptr);
+			}
+			col = (*row).erase(col);
+		}
+		row = mGrid.erase(row);
+	}
 }
 
 Coordinates Level::GetGridSize() const
