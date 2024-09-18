@@ -14,7 +14,12 @@ Golem::Golem()
 Golem::~Golem()
 {
 }
-
+void Golem::Update() {
+	Enemy::Update();
+	GetEnemyNearby(mPosition);
+	if (CanAttack())
+		ApplyDamage(mCurrentTarget);
+}
 void Golem::OnKill(Character* initiator)
 {
 	initiator->SetAttackPower(initiator->GetAttackPower() + mAttackPower);

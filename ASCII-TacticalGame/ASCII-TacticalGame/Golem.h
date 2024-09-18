@@ -10,6 +10,6 @@ public:
 
 	void OnKill(Character* initiator);
 	void AnyDamage(Character* initiator);
-	
+	void Update();
 };
 
