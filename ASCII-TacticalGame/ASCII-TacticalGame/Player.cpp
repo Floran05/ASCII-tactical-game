@@ -86,6 +86,11 @@ bool Player::TryMove(int key)
 	return bHasMoved;
 }
 
+void Player::OnKill(Character* instigator)
+{
+	I(Game)->GameOver();
+}
+
 //overide this funct for enemy
 void Player::GetEnemyNearby(Coordinates position)
 {

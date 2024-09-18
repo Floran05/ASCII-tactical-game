@@ -25,5 +25,8 @@ public:
 	static void DrawContextualInputs();
 	static void DrawMessage(const std::string& message);
 
+	static void DrawGameOverScreen(int gridWidth);
+	static void DrawOnWinScreen(int gridWidth);
+
 };
 

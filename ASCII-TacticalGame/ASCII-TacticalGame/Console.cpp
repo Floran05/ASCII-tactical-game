@@ -141,3 +141,25 @@ void Console::DrawMessage(const std::string& message)
 	std::cout << message;
 	Console::SetConsoleColor(0);
 }
+
+void Console::DrawGameOverScreen(int gridWidth)
+{
+	gridWidth = gridWidth * 4 + 1;
+	Console::ClearConsole();
+	Console::DrawSeparator(gridWidth);
+	std::cout << std::endl;
+	const std::string gameOverMessage = "G A M E  O V E R";
+	std::cout << std::string((gridWidth - gameOverMessage.size()) / 2, ' ') << gameOverMessage << std::endl;
+	Console::DrawSeparator(gridWidth);
+}
+
+void Console::DrawOnWinScreen(int gridWidth)
+{
+	gridWidth = gridWidth * 4 + 1;
+	Console::ClearConsole();
+	Console::DrawSeparator(gridWidth);
+	std::cout << std::endl;
+	const std::string onWinMessage = "Y O U  W I N";
+	std::cout << std::string((gridWidth - onWinMessage.size()) / 2, ' ') << onWinMessage << std::endl;
+	Console::DrawSeparator(gridWidth);
+}

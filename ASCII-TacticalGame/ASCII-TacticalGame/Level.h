@@ -37,7 +37,7 @@ protected:
 public:
 
 	// Load level from txt file by index
-	virtual void Load();
+	virtual bool Load(int levelIndex = -1);
 	void ClearGrid();
 
 	int GetRemainingEnemies();
@@ -52,6 +52,9 @@ public:
 	template <typename T>
 	T* GetTargetInCell(const Coordinates& position);
 	void SetCellContent(const Coordinates& position, GameObject* object);
+
+	void OnGameOver();
+	void OnWin();
 };
 
 template<typename T>

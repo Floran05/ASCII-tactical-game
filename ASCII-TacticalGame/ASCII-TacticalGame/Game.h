@@ -21,6 +21,7 @@ protected:
 	Controller* mController;
 
 	bool mRenderNeeded;
+	bool mIsGameEnded;
 
 	std::list<GameObject*> objects;
 
@@ -35,6 +36,7 @@ public:
 	void RequestRender();
 	void AddObject(GameObject* object);
 
+	void GameOver();
 
 	Level* GetLevel() const { return mLevel; }
 	Controller* GetController() const { return mController; }

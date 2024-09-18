@@ -184,9 +184,30 @@ void Level::SetCellContent(const Coordinates& position, GameObject* object)
 	mGrid[position.x][position.y]->SetContent(object);
 }
 
-void Level::Load()
+void Level::OnGameOver()
 {
-	++mCurrentLevelIndex;
+	Console::DrawGameOverScreen(mGrid.size() ? mGrid[0].size() : 10);
+	Sleep(2000);
+	Load(0);
+}
+
+void Level::OnWin()
+{
+	Console::DrawOnWinScreen(mGrid.size() ? mGrid[0].size() : 10);
+	Sleep(2000);
+	exit(0);
+}
+
+bool Level::Load(int levelIndex)
+{
+	if (levelIndex >= 0)
+	{
+		mCurrentLevelIndex = levelIndex + 1;
+	}
+	else
+	{
+		++mCurrentLevelIndex;
+	}
 	unsigned int currentLevelId = 0;
 	bool bSkipEmptyLine = true;
 
@@ -196,7 +217,7 @@ void Level::Load()
 	if (!file)
 	{
 		std::cout << "CAN'T OPEN FILE" << std::endl;
-		return;
+		return false;
 	}
 
 	std::string line;
@@ -221,9 +242,16 @@ void Level::Load()
 	}
 	file.close();
 
-	LoadFromTxtLevel(levelRaw);
-
-	I(Game)->RequestRender();
+	if (levelRaw.size())
+	{
+		LoadFromTxtLevel(levelRaw);
+		I(Game)->RequestRender();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void Level::ClearGrid()
@@ -234,12 +262,9 @@ void Level::ClearGrid()
 		{
 			if ((*col)->GetContent() != nullptr)
 			{
-				delete (*col)->GetContent();
-				(*col)->SetContent(nullptr);
+				(*col)->GetContent()->Kill();
 			}
-			col = (*row).erase(col);
 		}
-		row = mGrid.erase(row);
 	}
 }
 
