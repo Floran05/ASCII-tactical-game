@@ -5,7 +5,7 @@
 Golem::Golem()
 {
 	mSymbol = 'G';
-	mHealthPoint = 4;
+	mHealthPoint = 3;
 	mMaxHealthPoint = mHealthPoint;
 	mAttackPower = 2;
 	mName = "Golem";

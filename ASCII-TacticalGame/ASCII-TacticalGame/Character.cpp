@@ -61,6 +61,7 @@ void Character::ApplyDamage(Character* target)
 	if (target->GetHealthPoints() <= 0) {
 		target->Kill();
 		target->OnKill(this);
+		mCurrentTarget = nullptr;
 	}
 }
 

@@ -9,7 +9,7 @@ Player::Player()
 {
 	mSymbol = '@';
 	mMaxRange = 3;
-	mHealthPoint = 5;
+	mHealthPoint = 10;
 	mAttackPower = 2;
 	mMaxHealthPoint = mHealthPoint;
 }
