@@ -15,7 +15,7 @@ Spectre::~Spectre()
 
 void Spectre::Update()
 {
-	Enemy::Update();
+	
 	Coordinates PlayerPos = I(Game)->GetLevel()->GetPlayer()->GetPosition();
 	if (mPosition.x - PlayerPos.x >= 0)
 		Move(1, 0);
@@ -26,11 +26,16 @@ void Spectre::Update()
 		Move(0, 1);
 	else if (mPosition.y - PlayerPos.y < 0)
 		Move(0, -1);
-
+	I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName()+" il te fuit");
 	mRoundPosition = mPosition;
 	GetEnemyNearby(mPosition);
-	if (CanAttack())
+	if (CanAttack()) {
+		I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName() + " | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
 		ApplyDamage(mCurrentTarget);
+	}
+		
+	
+	Enemy::Update();
 }
 
 void Spectre::OnKill(Character* initiator) {

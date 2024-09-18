@@ -14,9 +14,9 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName());
+
 	I(Game)->Render();
-	Sleep(1000);
+	Sleep(1500);
 }
 
 void Enemy::GetEnemyNearby(Coordinates position)

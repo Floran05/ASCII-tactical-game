@@ -1,5 +1,5 @@
 #include "Golem.h"
-
+#include"Game.h"
 #include <stdlib.h>
 #include<Windows.h>
 Golem::Golem()
@@ -15,10 +15,13 @@ Golem::~Golem()
 {
 }
 void Golem::Update() {
-	Enemy::Update();
+	I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName());
 	GetEnemyNearby(mPosition);
-	if (CanAttack())
+	if (CanAttack()){
 		ApplyDamage(mCurrentTarget);
+		I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName() + "  | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
+	}
+	Enemy::Update();
 }
 void Golem::OnKill(Character* initiator)
 {
