@@ -4,8 +4,6 @@
 
 #include <list>
 
-#define FRAMERATE 30
-
 class Level;
 class Controller;
 class GameObject;
@@ -40,6 +38,6 @@ public:
 
 	Level* GetLevel() const { return mLevel; }
 	Controller* GetController() const { return mController; }
-	std::list<GameObject*>GetEntities() { return objects; }
+	std::list<GameObject*>& GetEntities() { return objects; }
 };
 

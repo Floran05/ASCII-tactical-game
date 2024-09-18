@@ -5,7 +5,7 @@
 Enemy::Enemy()
 {
 	mMaxRange = 1;
-	mIsEnemy == true;
+	mIsEnemy = true;
 }
 
 Enemy::~Enemy()
@@ -14,7 +14,7 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	I(Game)->GetLevel()->SetContextualMessage("Au tour de " + std::to_string(GetId()));
+	I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName());
 	I(Game)->Render();
-	Sleep(3000);
+	Sleep(1000);
 }

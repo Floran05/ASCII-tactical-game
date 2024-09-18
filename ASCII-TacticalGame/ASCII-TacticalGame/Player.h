@@ -15,6 +15,7 @@ protected :
 public:
 
 	void Update() override;
+	bool TryMove(int key);
 
 	void GetEnemyNearby(Coordinates position) override;
 	bool IsHisTurn() const { return mHisTurn; }

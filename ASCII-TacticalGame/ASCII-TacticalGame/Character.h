@@ -23,7 +23,7 @@ protected:
 	bool mIsEnemy;
 	std::string mName;
 public:
-	virtual void Move(int x, int y);
+	virtual bool Move(int x, int y);
 	virtual bool CanAttack();
 	virtual void ApplyDamage(Character* target);
 	virtual void AnyDamage(Character* initiator);

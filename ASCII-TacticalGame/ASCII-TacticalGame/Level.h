@@ -51,6 +51,7 @@ public:
 
 	template <typename T>
 	T* GetTargetInCell(const Coordinates& position);
+	void SetCellContent(const Coordinates& position, GameObject* object);
 };
 
 template<typename T>

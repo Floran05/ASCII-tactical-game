@@ -15,14 +15,19 @@ Spectre::~Spectre()
 
 void Spectre::Update()
 {
+	Enemy::Update();
 	Coordinates PlayerPos = I(Game)->GetLevel()->GetPlayer()->GetPosition();
-	if (mPosition.x > PlayerPos.x || mPosition.y > PlayerPos.y) {
-		Move(1, 1);
-	}
-	else {
-		Move(-1, -1);
-	}
+	if (mPosition.x - PlayerPos.x >= 0)
+		Move(1, 0);
+	else if (mPosition.x - PlayerPos.x < 0)
+		Move(-1, 0);
 
+	if (mPosition.y - PlayerPos.y >= 0)
+		Move(0, 1);
+	else if (mPosition.y - PlayerPos.y < 0)
+		Move(0, -1);
+
+	mRoundPosition = mPosition;
 }
 
 void Spectre::OnKill(Character* initiator) {

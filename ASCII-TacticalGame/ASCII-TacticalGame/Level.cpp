@@ -88,11 +88,12 @@ void Level::Render()
 	}
 
 	Console::DrawCharacterStats(mPlayer, gridWidth);
-	Console::DrawContextualInputs();
 	if (!mContextualMessage.empty())
 	{
 		Console::DrawMessage(mContextualMessage);
+		std::cout << " ";
 	}
+	Console::DrawContextualInputs();
 }
 
 void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
@@ -104,6 +105,7 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 		for (const char c : lines[i])
 		{
 			Cell* newCell = new Cell();
+			Character* newCharacter = nullptr;
 			mGrid[i].emplace_back(newCell);
 			switch (c)
 			{
@@ -111,9 +113,8 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 				if (!mPlayer)
 				{
 					mPlayer = new Player();
-					mPlayer->SetPosition(i, column);
 					mPlayer->SetRoundPosition(i, column);
-					newCell->SetContent(mPlayer);
+					newCharacter = mPlayer;
 				}
 				else
 				{
@@ -121,18 +122,24 @@ void Level::LoadFromTxtLevel(const std::vector<std::string>& lines)
 				}
 				break;
 			case 'G':
-				newCell->SetContent(Enemy::Create<Golem>());
+				newCharacter = Enemy::Create<Golem>();
 				break;
 			case 'S':
-				newCell->SetContent(Enemy::Create<Spectre>());
+				newCharacter = Enemy::Create<Spectre>();
 				break;
 			case 'R':
-				newCell->SetContent(Enemy::Create<Reaper>());
+				newCharacter = Enemy::Create<Reaper>();
 				break;
 			default:
-				newCell->SetContent(nullptr);
 				break;
 			}
+
+			if (newCharacter)
+			{
+				newCharacter->SetPosition(i, column);
+				newCharacter->SetRoundPosition(i, column);
+			}
+			newCell->SetContent(newCharacter);
 
 			++column;
 		}
@@ -172,6 +179,11 @@ bool Level::IsCellEmpty(const Coordinates& position)
 	if (position.y > mGrid[position.x].size() - 1) 
 		return true;
 	return mGrid[position.x][position.y]->GetContent() == nullptr;
+}
+
+void Level::SetCellContent(const Coordinates& position, GameObject* object)
+{
+	mGrid[position.x][position.y]->SetContent(object);
 }
 
 void Level::Load(unsigned int levelId)

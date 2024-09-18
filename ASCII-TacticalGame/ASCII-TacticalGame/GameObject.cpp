@@ -21,3 +21,8 @@ void GameObject::Update()
 void GameObject::Render()
 {
 }
+
+void GameObject::Kill()
+{
+	mIsAlive = false;
+}

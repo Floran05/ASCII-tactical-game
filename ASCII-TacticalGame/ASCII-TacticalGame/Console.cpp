@@ -138,6 +138,6 @@ void Console::DrawContextualInputs()
 void Console::DrawMessage(const std::string& message)
 {
 	Console::SetConsoleColor(FOREGROUND_BLUE | FOREGROUND_RED);
-	std::cout << message << std::endl;
+	std::cout << message;
 	Console::SetConsoleColor(0);
 }

@@ -2,6 +2,8 @@
 #include "Level.h"
 #include"Player.h"
 #include"Character.h"
+
+#include <iostream>
 Reaper::Reaper()
 {
 	mSymbol = 'R';
@@ -17,26 +19,26 @@ Reaper::~Reaper()
 
 void Reaper::Update()
 {
-
+	Enemy::Update();
 	Coordinates PlayerPos = I(Game)->GetLevel()->GetPlayer()->GetPosition();
-	if (mPosition.x - PlayerPos.x > mPosition.y - PlayerPos.y ) {
+	if (abs(mPosition.x - PlayerPos.x) >= abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.x - PlayerPos.x > 0)
-			Move(1, 0);
-		else
 			Move(-1, 0);
+		else if(mPosition.x - PlayerPos.x < 0)
+			Move(1, 0);
 	}
-	if (mPosition.x - PlayerPos.x < mPosition.y - PlayerPos.y) {
+	if (abs(mPosition.x - PlayerPos.x) < abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.y - PlayerPos.y > 0)
-			Move(0, 1);
-		else
 			Move(0, -1);
+		else if(mPosition.y - PlayerPos.y < 0)
+			Move(0, 1);
 	}
-	
+
+	mRoundPosition = mPosition;
 }
 
 void Reaper::OnKill(Character* initiator)
 {
-
 	std::list<GameObject*> Entities = I(Game)->GetEntities();
 	for (GameObject* i : Entities) {
 		if (Character* character = dynamic_cast<Character*>(i)) {

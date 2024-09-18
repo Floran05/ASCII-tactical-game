@@ -52,10 +52,21 @@ void Game::Update()
 
 void Game::Render()
 {
-	for (auto it = objects.begin(); it != objects.end();++it)
+	for (auto it = objects.begin(); it != objects.end();)
 	{
-		if (!(*it)->IsAlive()) continue;
-		(*it)->Render();
+		if ((*it)->IsAlive())
+		{
+			(*it)->Render();
+			++it;
+		}
+		else
+		{
+			Coordinates pos = (*it)->GetPosition();
+			delete *it;
+			*it = nullptr;
+			GetLevel()->SetCellContent(pos, nullptr);
+			it = objects.erase(it);
+		}
 	}
 	mRenderNeeded = false;
 }

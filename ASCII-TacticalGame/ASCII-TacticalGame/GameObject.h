@@ -44,7 +44,7 @@ public:
 	char GetSymbol() const { return mSymbol; }
 	bool IsAlive() const { return mIsAlive; }
 	
-	void Kill() { mIsAlive = false; }
+	void Kill();
 
 };
 
