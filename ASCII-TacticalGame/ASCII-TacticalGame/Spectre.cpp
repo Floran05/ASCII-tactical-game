@@ -28,6 +28,9 @@ void Spectre::Update()
 		Move(0, -1);
 
 	mRoundPosition = mPosition;
+	GetEnemyNearby(mPosition);
+	if (CanAttack())
+		ApplyDamage(mCurrentTarget);
 }
 
 void Spectre::OnKill(Character* initiator) {

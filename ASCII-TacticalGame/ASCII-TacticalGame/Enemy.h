@@ -15,6 +15,7 @@ public:
 
 	template<typename T>
 	static T* Create();
+	void GetEnemyNearby(Coordinates position) override;
 	
 };
 
