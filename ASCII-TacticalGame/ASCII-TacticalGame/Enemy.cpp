@@ -5,7 +5,7 @@
 Enemy::Enemy()
 {
 	mMaxRange = 1;
-
+	mIsEnemy == true;
 }
 
 Enemy::~Enemy()

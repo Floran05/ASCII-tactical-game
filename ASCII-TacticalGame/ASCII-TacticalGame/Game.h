@@ -40,6 +40,6 @@ public:
 
 	Level* GetLevel() const { return mLevel; }
 	Controller* GetController() const { return mController; }
-
+	std::list<GameObject*>GetEntities() { return objects; }
 };
 

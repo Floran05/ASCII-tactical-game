@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include"Game.h"
 #include"Level.h"
+#include <string>
 class Enemy;
 class Character : public GameObject
 {
@@ -19,7 +20,8 @@ protected:
 	int mMaxRange;
 	Character* mCurrentTarget;
 	Coordinates mRoundPosition;
-
+	bool mIsEnemy;
+	std::string mName;
 public:
 	virtual void Move(int x, int y);
 	virtual bool CanAttack();
@@ -37,7 +39,8 @@ public:
 	int GetMaxRange() const { return mMaxRange; }
 	Character* GetCurrentTarget() const { return mCurrentTarget; }
 	Coordinates GetRoundPosition() const { return mRoundPosition; }
-
+	bool IsAnEnemy()const { return mIsEnemy; }
+	std::string DisplayName() const{ return mName;}
 	virtual void GetEnemyNearby(Coordinates position);
 	template<typename T> T* TGetEnemyNearby(Coordinates position )
 	{

@@ -8,7 +8,7 @@ Golem::Golem()
 	mHealthPoint = 4;
 	mMaxHealthPoint = mHealthPoint;
 	mAttackPower = 2;
-	
+	mName = "Golem";
 }
 
 Golem::~Golem()
@@ -22,8 +22,10 @@ void Golem::OnKill(Character* initiator)
 
 void Golem::AnyDamage(Character* initiator)
 {
-	srand(timeGetTime());
-	mHealthPoint += rand() % initiator->GetAttackPower() + 1;
+	if (!initiator->IsAnEnemy() && initiator->GetAttackPower()>0) {
+		srand(timeGetTime());
+		mHealthPoint += rand() % initiator->GetAttackPower() + 1;
+	}
 }
 
 

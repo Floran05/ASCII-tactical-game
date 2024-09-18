@@ -30,6 +30,7 @@ protected:
 	Coordinates mPosition;
 	char mSymbol;
 
+
 public:
 
 	virtual void Update();
@@ -42,7 +43,7 @@ public:
 	Coordinates GetPosition() const { return mPosition; }
 	char GetSymbol() const { return mSymbol; }
 	bool IsAlive() const { return mIsAlive; }
-
+	
 	void Kill() { mIsAlive = false; }
 
 };

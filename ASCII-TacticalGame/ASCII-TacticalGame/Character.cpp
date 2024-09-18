@@ -52,6 +52,8 @@ bool Character::CanAttack()
 
 void Character::ApplyDamage(Character* target)
 {
+	if (target == nullptr)
+		return;
 	target->SetHealthPoint(target->GetHealthPoints() - mAttackPower);
 	target->AnyDamage(this);
 	if (target->GetHealthPoints() <= 0) {

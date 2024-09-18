@@ -7,7 +7,7 @@ Spectre::Spectre()
 	mHealthPoint = 2;
 	mMaxHealthPoint = mHealthPoint;
 	mAttackPower = 1;
-	
+	mName = "Spectre";
 }
 Spectre::~Spectre()
 {
