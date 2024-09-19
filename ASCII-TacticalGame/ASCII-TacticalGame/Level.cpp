@@ -1,9 +1,10 @@
+#include "Level.h"
+
 #include <fstream>
 #include <iostream>
 
 #include "Game.h"
 #include "Console.h"
-#include "Level.h"
 #include "Player.h"
 #include "Golem.h"
 #include "Spectre.h"

@@ -1,9 +1,12 @@
 #include "Player.h"
+
+#include <iostream>
+#include <Windows.h>
+
 #include "Game.h"
 #include "Controller.h"
 #include "Enemy.h"
-#include<iostream>
-#include <Windows.h>
+
 Player::Player()
 	: mHisTurn(false)
 {

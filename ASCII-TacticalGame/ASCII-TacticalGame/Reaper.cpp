@@ -1,9 +1,11 @@
 #include "Reaper.h"
-#include "Level.h"
-#include"Player.h"
-#include"Character.h"
 
 #include <iostream>
+
+#include "Level.h"
+#include "Player.h"
+#include "Character.h"
+
 Reaper::Reaper()
 {
 	mSymbol = 'R';
@@ -19,22 +21,21 @@ Reaper::~Reaper()
 
 void Reaper::Update()
 {
-	
 	Coordinates PlayerPos = I(Game)->GetLevel().GetPlayer()->GetPosition();
 	if (abs(mPosition.x - PlayerPos.x) >= abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.x - PlayerPos.x > 0)
 			Move(-1, 0);
 		else if(mPosition.x - PlayerPos.x < 0)
 			Move(1, 0);
-		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " " + std::to_string(GetId()) + " | il te poursuit ");
 	}
 	if (abs(mPosition.x - PlayerPos.x) < abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.y - PlayerPos.y > 0)
 			Move(0, -1);
 		else if(mPosition.y - PlayerPos.y < 0)
 			Move(0, 1);
-		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " " + std::to_string(GetId()) + " | il te poursuit ");
 	}
+	I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " " + std::to_string(GetId()) + " | il te poursuit ");
+
 	mRoundPosition = mPosition;
 	GetEnemyNearby(mPosition);
 	if (CanAttack()) {

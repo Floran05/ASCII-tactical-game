@@ -1,4 +1,5 @@
 #include "Controller.h"
+
 #include <Windows.h>
 
 Controller::Controller()

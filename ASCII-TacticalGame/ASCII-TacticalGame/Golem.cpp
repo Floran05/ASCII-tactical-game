@@ -1,7 +1,10 @@
 #include "Golem.h"
-#include"Game.h"
+
 #include <stdlib.h>
-#include<Windows.h>
+#include <Windows.h>
+
+#include "Game.h"
+
 Golem::Golem()
 {
 	mSymbol = 'G';
