@@ -38,22 +38,23 @@ public:
 	int GetAttackPower() const { return mAttackPower; }
 	int GetMaxRange() const { return mMaxRange; }
 	Character* GetCurrentTarget() const { return mCurrentTarget; }
+	int GetTargetId() const;
 	Coordinates GetRoundPosition() const { return mRoundPosition; }
 	bool IsAnEnemy()const { return mIsEnemy; }
 	std::string DisplayName() const{ return mName;}
 	virtual void GetEnemyNearby(Coordinates position);
 	template<typename T> T* TGetEnemyNearby(Coordinates position )
 	{
-		T* enemy = I(Game)->GetLevel()->GetTargetInCell<T>(Coordinates(position.x+1,position.y));
+		T* enemy = I(Game)->GetLevel().GetTargetInCell<T>(Coordinates(position.x+1,position.y));
 		if (enemy != nullptr)
 			return enemy;
-		enemy = I(Game)->GetLevel()->GetTargetInCell<T>(Coordinates(position.x-1,position.y));
+		enemy = I(Game)->GetLevel().GetTargetInCell<T>(Coordinates(position.x-1,position.y));
 		if (enemy != nullptr)
 			return enemy;
-		enemy = I(Game)->GetLevel()->GetTargetInCell<T>(Coordinates(position.x,position.y+1));
+		enemy = I(Game)->GetLevel().GetTargetInCell<T>(Coordinates(position.x,position.y+1));
 		if (enemy != nullptr)
 			return enemy;
-		enemy = I(Game)->GetLevel()->GetTargetInCell<T>(Coordinates(position.x,position.y-1));
+		enemy = I(Game)->GetLevel().GetTargetInCell<T>(Coordinates(position.x,position.y-1));
 		if (enemy != nullptr)
 			return enemy;
 		return nullptr;

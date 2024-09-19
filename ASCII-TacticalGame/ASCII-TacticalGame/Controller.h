@@ -18,8 +18,6 @@ protected :
 
 public : 
 
-	void Update();
-	bool IsKey(int key);
 	int WaitForKey();
 	
 };

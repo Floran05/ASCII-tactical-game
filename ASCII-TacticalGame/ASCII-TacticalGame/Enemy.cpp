@@ -14,7 +14,6 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-
 	I(Game)->Render();
 	Sleep(1500);
 }

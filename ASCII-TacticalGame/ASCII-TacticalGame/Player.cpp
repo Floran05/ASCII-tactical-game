@@ -20,18 +20,24 @@ Player::~Player()
 
 void Player::Update()
 {
+	int oldTargetId = GetTargetId();
+	GetEnemyNearby(mPosition);
+	bool bTargetHasChanged = oldTargetId != GetTargetId();
+
 	if (!mHisTurn)
 	{
-		I(Game)->GetLevel()->SetContextualMessage("A ton tour !");
+		I(Game)->GetLevel().SetContextualMessage("A ton tour !");
 		mHisTurn = true;
 		I(Game)->Render();
 	}
+	else if (bTargetHasChanged)
+	{
+		I(Game)->Render();
+	}
 
-	int key = I(Game)->GetController()->WaitForKey();
-	bool bUselessMoveKey = TryMove(key) == false;
+	int key = I(Game)->GetController().WaitForKey();
+	bool bHasMoved = TryMove(key);
 	bool bUselessActionKey = false;
-
-	GetEnemyNearby(mPosition);
 	switch (key)
 	{
 	case VK_SPACE:
@@ -48,9 +54,9 @@ void Player::Update()
 
 	if (mHisTurn)
 	{
-		if (!bUselessMoveKey || !bUselessActionKey)
+		if (!bUselessActionKey || bHasMoved)
 		{
-			I(Game)->GetLevel()->SetContextualMessage("");
+			I(Game)->GetLevel().SetContextualMessage("");
 			I(Game)->Render();
 		}
 		Update();

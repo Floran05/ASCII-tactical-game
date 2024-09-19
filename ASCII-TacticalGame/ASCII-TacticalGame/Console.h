@@ -19,14 +19,13 @@ public:
 	static void DrawHealthBar(int size, float percent);
 	static void DrawCharacterStats(Character* character, int rowSize);
 
-	static void DrawGridHorizontalBorder(int gridWidth);
+	static void DrawGridHorizontalBorder(int gridWidth, bool bAtExtremity = false);
 	static void DrawSeparator(int size);
 	
 	static void DrawContextualInputs();
 	static void DrawMessage(const std::string& message);
 
-	static void DrawGameOverScreen(int gridWidth);
-	static void DrawOnWinScreen(int gridWidth);
+	static void DrawScreenMessage(const std::string& message, int gridWidth, int color = 0);
 
 };
 

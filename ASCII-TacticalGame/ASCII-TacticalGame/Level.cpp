@@ -36,7 +36,7 @@ void Level::Render()
 	Console::ClearConsole();
 
 	Console::DrawCharacterStats(mPlayer->GetCurrentTarget(), gridWidth);
-	Console::DrawGridHorizontalBorder(gridWidth);
+	Console::DrawGridHorizontalBorder(gridWidth, true);
 	const Coordinates initialPosition = mPlayer->GetRoundPosition();
 	int r = 0, c = 0;
 	for (std::vector<Cell*> row : mGrid)
@@ -52,33 +52,36 @@ void Level::Render()
 				{
 					if (r == initialPosition.x && c == initialPosition.y)
 					{
-						Console::SetConsoleColor(BACKGROUND_BLUE);
+						Console::SetConsoleColor(9 * 12);
 					}
 					else if (Utilities::ManhattanDistance(initialPosition.x, initialPosition.y, r, c) <= mPlayer->GetMaxRange())
 					{
-						Console::SetConsoleColor(BACKGROUND_GREEN);
+						Console::SetConsoleColor(9 * 16);
 					}
 				}
 				std::cout << "   ";
-				Console::SetConsoleColor(0);
+				Console::SetConsoleColor(c == row.size() - 1 ? 0 : 8);
 				std::cout << "|";
+				Console::SetConsoleColor(0);
 			}
 			else
 			{
-				std::cout << " ";
-				if (mPlayer->GetCurrentTarget() != nullptr && cell->GetContent()->GetId() == mPlayer->GetCurrentTarget()->GetId())
+				if (mPlayer->IsHisTurn() && mPlayer->GetCurrentTarget() != nullptr && cell->GetContent()->GetId() == mPlayer->GetCurrentTarget()->GetId())
 				{
-					Console::SetConsoleColor(FOREGROUND_RED);
+					Console::SetConsoleColor(12 * 16 + 15);
 				}
+				std::cout << " ";
 				std::cout << cell->GetContent()->GetSymbol();
+				std::cout << " ";
+				Console::SetConsoleColor(c == row.size() - 1 ? 0 : 8);
+				std::cout << "|";
 				Console::SetConsoleColor(0);
-				std::cout << " |";
 			}
 
 			++c;
 		}
 		std::cout << std::endl;
-		Console::DrawGridHorizontalBorder(gridWidth);
+		Console::DrawGridHorizontalBorder(gridWidth, r == mGrid.size() - 1);
 
 		++r;
 	}
@@ -186,14 +189,14 @@ void Level::SetCellContent(const Coordinates& position, GameObject* object)
 
 void Level::OnGameOver()
 {
-	Console::DrawGameOverScreen(mGrid.size() ? mGrid[0].size() : 10);
-	Sleep(2000);
+	Console::DrawScreenMessage("G A M E  O V E R", mGrid.size() ? static_cast<int>(mGrid[0].size()) : 10, 12 * 16);
+	Sleep(1000);
 	Load(0);
 }
 
 void Level::OnWin()
 {
-	Console::DrawOnWinScreen(mGrid.size() ? mGrid[0].size() : 10);
+	Console::DrawScreenMessage("Y O U  W I N", mGrid.size() ? static_cast<int>(mGrid[0].size()) : 10, 12 * 2 + 15);
 	Sleep(2000);
 	exit(0);
 }

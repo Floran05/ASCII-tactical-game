@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "Game.h"
 #include "Player.h"
+#include "Utilities.h"
 
 Console::Console()
 {
@@ -57,7 +58,7 @@ void Console::SetConsoleColor(int color)
 	HANDLE handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (color <= 0)
 	{
-		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
 	}
 	SetConsoleTextAttribute(handleConsole, color);
 }
@@ -99,11 +100,23 @@ void Console::DrawCharacterStats(Character* character, int rowSize)
 	Console::DrawSeparator(rowSize * 4 + 1);
 }
 
-void Console::DrawGridHorizontalBorder(int gridWidth)
+void Console::DrawGridHorizontalBorder(int gridWidth, bool bAtExtremity)
 {
+	SetConsoleColor(0);
 	std::cout << "+";
+	if (!bAtExtremity)
+	{
+		SetConsoleColor(8);
+	}
 	for (int i = 0; i < gridWidth; ++i)
 	{
+		if (!bAtExtremity && i == gridWidth - 1)
+		{
+			std::cout << "---";
+			SetConsoleColor(0);
+			std::cout << "+";
+			continue;
+		}
 		std::cout << "---+";
 	}
 	std::cout << std::endl;
@@ -117,7 +130,7 @@ void Console::DrawSeparator(int size)
 void Console::DrawContextualInputs()
 {
 	std::vector<std::string> inputs;
-	if (I(Game)->GetLevel()->GetPlayer()->CanAttack())
+	if (I(Game)->GetLevel().GetPlayer()->CanAttack())
 	{
 		inputs.emplace_back("[Enter] Attack");
 	}
@@ -142,24 +155,15 @@ void Console::DrawMessage(const std::string& message)
 	Console::SetConsoleColor(0);
 }
 
-void Console::DrawGameOverScreen(int gridWidth)
+void Console::DrawScreenMessage(const std::string& message, int gridWidth, int color)
 {
 	gridWidth = gridWidth * 4 + 1;
 	Console::ClearConsole();
+	Console::SetConsoleColor(color);
 	Console::DrawSeparator(gridWidth);
-	std::cout << std::endl;
-	const std::string gameOverMessage = "G A M E  O V E R";
-	std::cout << std::string((gridWidth - gameOverMessage.size()) / 2, ' ') << gameOverMessage << std::endl;
+	std::cout << std::string(gridWidth, ' ') << std::endl;
+	std::cout << std::string((gridWidth - message.size()) / 2, ' ') << message << std::string(Utilities::Round((gridWidth - message.size()) / 2.f), ' ') << std::endl;
 	Console::DrawSeparator(gridWidth);
-}
-
-void Console::DrawOnWinScreen(int gridWidth)
-{
-	gridWidth = gridWidth * 4 + 1;
-	Console::ClearConsole();
-	Console::DrawSeparator(gridWidth);
-	std::cout << std::endl;
-	const std::string onWinMessage = "Y O U  W I N";
-	std::cout << std::string((gridWidth - onWinMessage.size()) / 2, ' ') << onWinMessage << std::endl;
-	Console::DrawSeparator(gridWidth);
+	std::cout << std::string(gridWidth, ' ') << std::endl;
+	Console::SetConsoleColor(0);
 }

@@ -20,26 +20,26 @@ Reaper::~Reaper()
 void Reaper::Update()
 {
 	
-	Coordinates PlayerPos = I(Game)->GetLevel()->GetPlayer()->GetPosition();
+	Coordinates PlayerPos = I(Game)->GetLevel().GetPlayer()->GetPosition();
 	if (abs(mPosition.x - PlayerPos.x) >= abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.x - PlayerPos.x > 0)
 			Move(-1, 0);
 		else if(mPosition.x - PlayerPos.x < 0)
 			Move(1, 0);
-		I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName()+ " il te poursuit ");
+		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName()+ " il te poursuit ");
 	}
 	if (abs(mPosition.x - PlayerPos.x) < abs(mPosition.y - PlayerPos.y)) {
 		if (mPosition.y - PlayerPos.y > 0)
 			Move(0, -1);
 		else if(mPosition.y - PlayerPos.y < 0)
 			Move(0, 1);
-		I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName() + " il te poursuit ");
+		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " il te poursuit ");
 	}
 	mRoundPosition = mPosition;
 	GetEnemyNearby(mPosition);
 	if (CanAttack()) {
 		ApplyDamage(mCurrentTarget);
-		I(Game)->GetLevel()->SetContextualMessage("Au tour de " + DisplayName() + " | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
+		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
 	}
 	Enemy::Update();
 }

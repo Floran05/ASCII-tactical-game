@@ -7,24 +7,17 @@
 #include "Windows.h"
 
 Game::Game()
-	: mLevel(nullptr)
-	, mController(nullptr)
-	, mIsGameEnded(false)
+	: mIsGameEnded(false)
 {
 }
 
 Game::~Game()
 {
-	delete mLevel;
-	delete mController;
 }
 
 void Game::Init()
 {
-	mLevel = new Level();
-	//AddObject(mLevel);
-	mLevel->Load();
-	mController = new Controller();
+	mLevel.Load();
 }
 
 void Game::Run()
@@ -42,17 +35,16 @@ void Game::Run()
 
 void Game::Update()
 {
-	if (I(Game)->GetLevel()->GetRemainingEnemies() <= 0)
+	if (I(Game)->GetLevel().GetRemainingEnemies() <= 0)
 	{
-		if (!I(Game)->GetLevel()->Load())
+		if (!I(Game)->GetLevel().Load())
 		{
-			GetLevel()->OnWin();
+			GetLevel().OnWin();
 		}
 	}
 
-	mController->Update();
-	mLevel->Update();
-	for (auto it = objects.begin(); it != objects.end(); ++it)
+	mLevel.Update();
+	for (auto it = mObjects.begin(); it != mObjects.end(); ++it)
 	{
 		if (*it == nullptr || !(*it)->IsAlive()) continue;
 		(*it)->Update();
@@ -63,8 +55,8 @@ void Game::Update()
 
 void Game::Render()
 {
-	mLevel->Render();
-	for (auto it = objects.begin(); it != objects.end();)
+	mLevel.Render();
+	for (auto it = mObjects.begin(); it != mObjects.end();)
 	{
 		if (*it != nullptr && (*it)->IsAlive())
 		{
@@ -76,21 +68,21 @@ void Game::Render()
 			Coordinates pos = (*it)->GetPosition();
 			delete *it;
 			*it = nullptr;
-			GetLevel()->SetCellContent(pos, nullptr);
-			it = objects.erase(it);
+			GetLevel().SetCellContent(pos, nullptr);
+			it = mObjects.erase(it);
 		}
 	}
 
 	if (mIsGameEnded)
 	{
-		objects.clear();
-		GetLevel()->OnGameOver();
+		mObjects.clear();
+		GetLevel().OnGameOver();
 	}
 }
 
 void Game::AddObject(GameObject* object)
 {
-	objects.emplace_back(object);
+	mObjects.emplace_back(object);
 }
 
 void Game::GameOver()

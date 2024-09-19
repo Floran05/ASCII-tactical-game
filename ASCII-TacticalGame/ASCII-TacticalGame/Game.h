@@ -4,6 +4,9 @@
 
 #include <list>
 
+#include "Level.h"
+#include "Controller.h"
+
 class Level;
 class Controller;
 class GameObject;
@@ -17,12 +20,12 @@ public:
 
 protected:
 
-	Level* mLevel;
-	Controller* mController;
+	Level mLevel;
+	Controller mController;
 
 	bool mIsGameEnded;
 
-	std::list<GameObject*> objects;
+	std::list<GameObject*> mObjects;
 
 public:
 
@@ -36,8 +39,8 @@ public:
 
 	void GameOver();
 
-	Level* GetLevel() const { return mLevel; }
-	Controller* GetController() const { return mController; }
-	std::list<GameObject*>& GetEntities() { return objects; }
+	Level& GetLevel() { return mLevel; }
+	Controller& GetController() { return mController; }
+	std::list<GameObject*>& GetEntities() { return mObjects; }
 };
 
