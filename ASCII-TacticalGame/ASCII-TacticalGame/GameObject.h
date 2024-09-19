@@ -30,7 +30,6 @@ protected:
 	Coordinates mPosition;
 	char mSymbol;
 
-
 public:
 
 	virtual void Update();
@@ -38,13 +37,12 @@ public:
 
 	virtual void SetPosition(int x, int y) { mPosition = Coordinates(x, y); }
 	virtual void SetPosition(const Coordinates& coordinates) { mPosition = coordinates; }
+	void Kill();
 
 	int GetId() const { return mId; }
 	Coordinates GetPosition() const { return mPosition; }
 	char GetSymbol() const { return mSymbol; }
 	bool IsAlive() const { return mIsAlive; }
-	
-	void Kill();
 
 };
 

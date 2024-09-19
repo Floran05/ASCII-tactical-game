@@ -4,7 +4,9 @@
 #include"Game.h"
 #include"Level.h"
 #include <string>
+
 class Enemy;
+
 class Character : public GameObject
 {
 public:
@@ -22,11 +24,14 @@ protected:
 	Coordinates mRoundPosition;
 	bool mIsEnemy;
 	std::string mName;
+
 public:
+
 	virtual bool Move(int x, int y);
 	virtual bool CanAttack();
 	virtual void ApplyDamage(Character* target);
 	virtual void AnyDamage(Character* initiator);
+
 	virtual void SetRoundPosition(Coordinates position) { mRoundPosition = position; }
 	virtual void SetRoundPosition(int x, int y) { mRoundPosition = Coordinates(x, y); }
 	virtual void OnKill(Character* initiator);
@@ -43,6 +48,7 @@ public:
 	bool IsAnEnemy()const { return mIsEnemy; }
 	std::string DisplayName() const{ return mName;}
 	virtual void GetEnemyNearby(Coordinates position);
+
 	template<typename T> T* TGetEnemyNearby(Coordinates position )
 	{
 		T* enemy = I(Game)->GetLevel().GetTargetInCell<T>(Coordinates(position.x+1,position.y));
@@ -59,4 +65,5 @@ public:
 			return enemy;
 		return nullptr;
 	}
+
 };

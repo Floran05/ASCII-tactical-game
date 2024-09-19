@@ -97,7 +97,6 @@ void Player::OnKill(Character* instigator)
 	I(Game)->GameOver();
 }
 
-//overide this funct for enemy
 void Player::GetEnemyNearby(Coordinates position)
 {
 	mCurrentTarget = TGetEnemyNearby<Enemy>(position);

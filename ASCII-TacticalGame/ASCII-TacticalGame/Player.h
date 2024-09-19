@@ -8,7 +8,7 @@ public:
 	Player();
 	virtual ~Player();
 
-protected :
+protected:
 	
 	bool mHisTurn;
 
@@ -20,5 +20,6 @@ public:
 
 	void GetEnemyNearby(Coordinates position) override;
 	bool IsHisTurn() const { return mHisTurn; }
+
 };
 

@@ -8,6 +8,7 @@ class Character;
 class Console
 {
 public:
+
 	Console();
 	virtual ~Console();
 

@@ -162,7 +162,11 @@ void Console::DrawScreenMessage(const std::string& message, int gridWidth, int c
 	Console::SetConsoleColor(color);
 	Console::DrawSeparator(gridWidth);
 	std::cout << std::string(gridWidth, ' ') << std::endl;
-	std::cout << std::string((gridWidth - message.size()) / 2, ' ') << message << std::string(Utilities::Round((gridWidth - message.size()) / 2.f), ' ') << std::endl;
+	std::cout << 
+		std::string((gridWidth - message.size()) / 2, ' ') << 
+		message << 
+		std::string(static_cast<int>(Utilities::Round((gridWidth - message.size()) / 2.f)), ' ') << 
+		std::endl;
 	Console::DrawSeparator(gridWidth);
 	std::cout << std::string(gridWidth, ' ') << std::endl;
 	Console::SetConsoleColor(0);

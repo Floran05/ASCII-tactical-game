@@ -31,7 +31,6 @@ public:
 
 	void Init();
 	void Run();
-
 	void Update();
 	void Render();
 

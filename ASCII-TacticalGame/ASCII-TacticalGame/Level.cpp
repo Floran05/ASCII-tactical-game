@@ -37,6 +37,8 @@ void Level::Render()
 
 	Console::DrawCharacterStats(mPlayer->GetCurrentTarget(), gridWidth);
 	Console::DrawGridHorizontalBorder(gridWidth, true);
+
+	// Draw Grid
 	const Coordinates initialPosition = mPlayer->GetRoundPosition();
 	int r = 0, c = 0;
 	for (std::vector<Cell*> row : mGrid)
@@ -148,14 +150,11 @@ int Level::GetRemainingEnemies()
 	{
 		for (Cell* cell : row)
 		{
-			if (cell->GetContent() != nullptr)
+			if (Enemy* enemy = dynamic_cast<Enemy*>(cell->GetContent()))
 			{
-				if (Enemy* enemy = dynamic_cast<Enemy*>(cell->GetContent()))
+				if(enemy->IsAlive())
 				{
-					if(enemy->IsAlive())
-					{
-						++remainingEnemies;
-					}
+					++remainingEnemies;
 				}
 			}
 		}
@@ -256,17 +255,6 @@ bool Level::Load(int levelIndex)
 
 void Level::ClearGrid()
 {
-	/*for (auto row = mGrid.begin(); row != mGrid.end();++row)
-	{
-		for (auto col = (*row).begin(); col != (*row).end();++col)
-		{
-			if ((*col)->GetContent() != nullptr)
-			{
-				(*col)->GetContent()->Kill();
-			}
-		}
-	}*/
-
 	for (auto row = mGrid.begin(); row != mGrid.end();)
 	{
 		for (auto col = (*row).begin(); col != (*row).end();)

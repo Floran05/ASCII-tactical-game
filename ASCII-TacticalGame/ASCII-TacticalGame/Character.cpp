@@ -12,6 +12,9 @@ Character::Character()
 	, mAttackPower(0)
 	, mMaxRange(0)
 	, mCurrentTarget(nullptr)
+	, mRoundPosition(Coordinates())
+	, mIsEnemy(false)
+	, mName("CharacterName")
 {
 }
 
@@ -29,7 +32,9 @@ bool Character::Move(int x, int y)
 		return false;
 	}
 	if (!I(Game)->GetLevel().IsCellEmpty(newPosition))
+	{
 		return false;
+	}
 	if (newPosition.x > GridSize.x-1 || newPosition.x < 0 ) {
 		return false;
 	}
@@ -43,7 +48,6 @@ bool Character::Move(int x, int y)
 		I(Game)->GetLevel().MoveGameObjectInGrid(oldPosition, newPosition);
 		return true;
 	}
-
 	return false;
 }
 
@@ -55,7 +59,10 @@ bool Character::CanAttack()
 void Character::ApplyDamage(Character* target)
 {
 	if (target == nullptr || !target->IsAlive())
+	{
 		return;
+	}
+
 	target->SetHealthPoint(target->GetHealthPoints() - mAttackPower);
 	target->AnyDamage(this);
 	if (target->GetHealthPoints() <= 0) {
@@ -67,7 +74,6 @@ void Character::ApplyDamage(Character* target)
 
 void Character::AnyDamage(Character* initiator)
 {
-
 }
 
 void Character::OnKill(Character* initiator)
@@ -81,5 +87,4 @@ int Character::GetTargetId() const
 
 void Character::GetEnemyNearby(Coordinates position)
 {
-
 }
