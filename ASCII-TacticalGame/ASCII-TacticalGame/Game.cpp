@@ -9,7 +9,6 @@
 Game::Game()
 	: mLevel(nullptr)
 	, mController(nullptr)
-	, mRenderNeeded(true)
 	, mIsGameEnded(false)
 {
 }
@@ -23,7 +22,7 @@ Game::~Game()
 void Game::Init()
 {
 	mLevel = new Level();
-	AddObject(mLevel);
+	//AddObject(mLevel);
 	mLevel->Load();
 	mController = new Controller();
 }
@@ -34,6 +33,10 @@ void Game::Run()
 	{
 		Update();
 		Render();
+		if (mIsGameEnded)
+		{
+			mIsGameEnded = false;
+		}
 	}
 }
 
@@ -48,24 +51,19 @@ void Game::Update()
 	}
 
 	mController->Update();
+	mLevel->Update();
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
-		if (mIsGameEnded) return;
-
 		if (*it == nullptr || !(*it)->IsAlive()) continue;
 		(*it)->Update();
+
+		if (mIsGameEnded) return;
 	}
 }
 
 void Game::Render()
 {
-	if (mIsGameEnded)
-	{
-		GetLevel()->OnGameOver();
-		mIsGameEnded = false;
-		return;
-	}
-
+	mLevel->Render();
 	for (auto it = objects.begin(); it != objects.end();)
 	{
 		if (*it != nullptr && (*it)->IsAlive())
@@ -82,12 +80,12 @@ void Game::Render()
 			it = objects.erase(it);
 		}
 	}
-	mRenderNeeded = false;
-}
 
-void Game::RequestRender()
-{
-	mRenderNeeded = true;
+	if (mIsGameEnded)
+	{
+		objects.clear();
+		GetLevel()->OnGameOver();
+	}
 }
 
 void Game::AddObject(GameObject* object)

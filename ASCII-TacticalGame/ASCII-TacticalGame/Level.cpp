@@ -242,20 +242,28 @@ bool Level::Load(int levelIndex)
 	}
 	file.close();
 
-	if (levelRaw.size())
-	{
-		LoadFromTxtLevel(levelRaw);
-		I(Game)->RequestRender();
-		return true;
-	}
-	else
+	if (!levelRaw.size())
 	{
 		return false;
 	}
+
+	LoadFromTxtLevel(levelRaw);
+	return true;
 }
 
 void Level::ClearGrid()
 {
+	/*for (auto row = mGrid.begin(); row != mGrid.end();++row)
+	{
+		for (auto col = (*row).begin(); col != (*row).end();++col)
+		{
+			if ((*col)->GetContent() != nullptr)
+			{
+				(*col)->GetContent()->Kill();
+			}
+		}
+	}*/
+
 	for (auto row = mGrid.begin(); row != mGrid.end();)
 	{
 		for (auto col = (*row).begin(); col != (*row).end();)
@@ -264,7 +272,9 @@ void Level::ClearGrid()
 			{
 				(*col)->GetContent()->Kill();
 			}
+			col = (*row).erase(col);
 		}
+		row = mGrid.erase(row);
 	}
 }
 
