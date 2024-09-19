@@ -15,11 +15,11 @@ Golem::~Golem()
 {
 }
 void Golem::Update() {
-	I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName());
+	I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + " " + std::to_string(GetId()));
 	GetEnemyNearby(mPosition);
 	if (CanAttack()){
 		ApplyDamage(mCurrentTarget);
-		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() + "  | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
+		I(Game)->GetLevel().SetContextualMessage("Au tour de " + DisplayName() +" "+ std::to_string( GetId()) + "  | il attaque et tu perds " + std::to_string(mAttackPower) + " PV");
 	}
 	Enemy::Update();
 }
@@ -32,7 +32,7 @@ void Golem::AnyDamage(Character* initiator)
 {
 	if (!initiator->IsAnEnemy() && initiator->GetAttackPower()>0) {
 		srand(timeGetTime());
-		mHealthPoint += rand() % initiator->GetAttackPower() + 1;
+		mHealthPoint += rand() % initiator->GetAttackPower() ;
 	}
 }
 
