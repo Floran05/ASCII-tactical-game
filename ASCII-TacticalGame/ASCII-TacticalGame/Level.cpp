@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <Windows.h>
 
 #include "Game.h"
 #include "Console.h"

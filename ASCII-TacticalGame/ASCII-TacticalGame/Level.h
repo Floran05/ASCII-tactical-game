@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-#include <Windows.h>
 
 #include "Cell.h"
 

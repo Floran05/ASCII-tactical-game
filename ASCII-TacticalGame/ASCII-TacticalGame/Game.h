@@ -7,8 +7,6 @@
 #include "Level.h"
 #include "Controller.h"
 
-class Level;
-class Controller;
 class GameObject;
 
 class Game : public Singleton<Game>

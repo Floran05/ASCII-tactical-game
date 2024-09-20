@@ -1,6 +1,7 @@
 #include "Console.h"
 
 #include <iostream>
+#include <Windows.h>
 
 #include "Character.h"
 #include "Game.h"
